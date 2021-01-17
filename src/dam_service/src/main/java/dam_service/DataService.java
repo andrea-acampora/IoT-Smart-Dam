@@ -53,15 +53,15 @@ public class DataService extends AbstractVerticle {
 			sendError(400, response);
 		} else {
 			float value = res.getFloat("value");
-			String place = res.getString("place");
+			String state = res.getString("place");
 			long time = System.currentTimeMillis();
 			
-			values.addFirst(new DataPoint(value, time, place));
+			values.addFirst(new DataPoint(value, time, state));
 			if (values.size() > MAX_SIZE) {
 				values.removeLast();
 			}
 			
-			log("New value: " + value + " from " + place + " on " + new Date(time));
+			log("New value: " + value + " from " + state + " on " + new Date(time));
 			response.setStatusCode(200).end();
 		}
 	}

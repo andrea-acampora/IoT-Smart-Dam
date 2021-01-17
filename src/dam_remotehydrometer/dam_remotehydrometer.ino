@@ -2,11 +2,11 @@
 #include <ESP8266WiFi.h>
 
 /* wifi network name */
-char* ssidName = "TIM-CASA";
+char* ssidName = "Redmi";
 /* WPA2 PSK password */
-char* pwd = "tim3d208f6e03";
+char* pwd = "12345678";
 /* service IP address */ 
-char* address = "http://ecf3c606e819.ngrok.io";
+char* address = "http://f800bfaf527d.ngrok.io";
 
 void setup() { 
   Serial.begin(115200);                                
