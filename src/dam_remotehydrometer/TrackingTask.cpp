@@ -1,7 +1,7 @@
 #include "TrackingTask.h"
 
 
-TrackingTask::TrackingTask(Hydrometer* hydrometer, WaterLevel* waterLevel)){
+TrackingTask::TrackingTask(Hydrometer* hydrometer, WaterLevel* waterLevel){
     this->hydrometer = hydrometer; 
     this->waterLevel = waterLevel; 
 }

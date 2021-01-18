@@ -14,6 +14,18 @@ void WaterLevel::setWaterLevel(float level){
     this->setState(); 
 }
 
+bool WaterLevel::isNormal(){
+  return this->state==NORMAL;
+}
+
+bool WaterLevel::isPreAlarm(){
+  return this->state==PRE_ALARM;
+}
+
+bool WaterLevel::isAlarm(){
+  return this->state==ALARM;
+}
+
 void WaterLevel::setState(){
     if(this->level > PRE_ALARM_LEVEL){
         if(this->level > ALARM_LEVEL){
@@ -25,4 +37,3 @@ void WaterLevel::setState(){
         this->state = NORMAL; 
     }
 }
-

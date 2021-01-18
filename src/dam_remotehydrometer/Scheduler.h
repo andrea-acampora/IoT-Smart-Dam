@@ -2,6 +2,9 @@
 #define __SCHEDULER__
 
 #include "Task.h"
+#include "Arduino.h"
+#include <Ticker.h>
+
 
 #define MAX_TASKS 50
 
@@ -10,7 +13,8 @@ class Scheduler {
   
   int basePeriod;
   int nTasks;
-  Task* taskList[MAX_TASKS];  
+  Task* taskList[MAX_TASKS];
+  Ticker ticker;
 
 public:
   void init(int basePeriod);  

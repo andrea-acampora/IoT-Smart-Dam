@@ -1,11 +1,12 @@
 #include "Sonar.h"
 
-Sonar::Sonar(int trigPin, int echoPin, Temp* tempSensor){
+Sonar::Sonar(int trigPin, int echoPin, Temp* tempSensor,float groundDistance){
    this->trigPin = trigPin; 
    this->echoPin = echoPin; 
    this->tempSensor = tempSensor; 
    pinMode(trigPin, OUTPUT);
    pinMode(echoPin, INPUT);
+   this->groundDistance = groundDistance;
 }
 
 float Sonar::getDistance(){
@@ -22,9 +23,14 @@ float Sonar::getDistance(){
     float tUS = pulseIn(echoPin, HIGH);
     float t = tUS / 1000.0 / 1000.0 / 2;
     float d = t*vs;
-    return constrain(d, 0, MAX_OBJECT_DISTANCE);
+    return d;
 }
 
-// bool Sonar::isObjectDetected(){
-//     return  this -> getDistance() < MAX_OBJECT_DISTANCE;
-// }
+float Sonar::getCurrentWaterLevel(){
+    return this->groundDistance - this->getDistance();
+}
+
+float Sonar::getGroundDistance(){
+    return this->groundDistance;
+}
+

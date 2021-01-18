@@ -1,8 +1,9 @@
 #ifndef WATER_LEVEL
-#include WATER_LEVEL
+#define WATER_LEVEL
 
 #define PRE_ALARM_LEVEL 30 //a caso
 #define ALARM_LEVEL 70 //a caso
+#include "Arduino.h"
 
 class WaterLevel
 {
@@ -13,7 +14,9 @@ private:
 public:
     WaterLevel();
     float getWaterLevel(); 
-    float getState(); 
+    bool isNormal();
+    bool isPreAlarm();
+    bool isAlarm();
     void setWaterLevel(float level); 
 };
 #endif

@@ -1,8 +1,8 @@
 #include "SendingTask.h"
 
 
-SendingTask::SendingTask(){
-
+SendingTask::SendingTask(WaterLevel* waterLevel ){
+    this->waterLevel = waterLevel;
 }
 
 void SendingTask::init(int period){
@@ -14,9 +14,11 @@ void SendingTask::tick(){
     switch (state)
     {
     case ON:
+        DataSender.sendData(waterLevel -> getWaterLevel(), "prova");
         break;
     
     case OFF:
+        this -> setActive(false);
         break; 
     }
 }

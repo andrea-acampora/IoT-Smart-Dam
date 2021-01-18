@@ -1,6 +1,6 @@
 #include "WaterLevelControllerTask.h"
 
-WaterLevelControllerTask::WaterLevelControllerTask(TrackingTask* trackingTask, SendingTask* sendingTask, BlinkingTask* blinkingTask, WaterLevel* waterLevel){
+WaterLevelControllerTask::WaterLevelControllerTask(Task* trackingTask,Task* sendingTask,Task* blinkingTask, WaterLevel* waterLevel){
     this->trackingTask = trackingTask; 
     this->sendingTask = sendingTask; 
     this->blinkingTask = blinkingTask; 
@@ -21,24 +21,18 @@ void WaterLevelControllerTask::tick(){
         break;
 
     case WORKING:
-
-        switch (this->waterLevel->getState())
-        {
-        case NORMAL:
+        if(this->waterLevel->isNormal()){
             this->blinkingTask->setActive(false); 
             this->sendingTask->setActive(false); 
-            break;
-        case PRE_ALARM:
+        }else if(this->waterLevel->isPreAlarm()){
             this->blinkingTask->setActive(true); 
             //settare frequenza di sending
             this->sendingTask->setActive(true); 
-            break;
-        }
-        case ALARM:
+        }else if(this->waterLevel->isAlarm()){
             this->blinkingTask->setActive(false); 
             //settare frequenza di sending 
             this->sendingTask->setActive(true); 
-
-        break; 
-    }
+        }
+        break;
+    } 
 }

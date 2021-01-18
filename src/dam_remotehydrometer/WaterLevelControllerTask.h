@@ -12,12 +12,12 @@ class WaterLevelControllerTask : public Task
 {
 private:
     enum {START, WORKING} state; 
-    TrackingTask* trackingTask; 
-    SendingTask* sendingTask; 
-    BlinkingTask* blinkingTask; 
+    Task* trackingTask; 
+    Task* sendingTask; 
+    Task* blinkingTask; 
     WaterLevel* waterLevel; 
 public:
-    WaterLevelControllerTask(TrackingTask* trackingTask, SendingTask* sendingTask, BlinkingTask* blinkingTask, WaterLevel* waterLevel);
+    WaterLevelControllerTask(Task* trackingTask,Task* sendingTask, Task* blinkingTask, WaterLevel* waterLevel);
     void init(int period); 
     void tick(); 
 };
