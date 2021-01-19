@@ -11,7 +11,6 @@ class WaterLevel
 private:
     enum {NORMAL, PRE_ALARM, ALARM} state; 
     float level;
-    String getState();
     void setState(); 
 public:
     WaterLevel();
@@ -20,5 +19,6 @@ public:
     bool isPreAlarm();
     bool isAlarm();
     void setWaterLevel(float level); 
+    String getState();
 };
 #endif

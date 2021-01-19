@@ -14,7 +14,7 @@ void SendingTask::tick(){
     switch (state)
     {
     case ON:
-        DataSender.sendData(waterLevel -> getWaterLevel(), "prova");
+        DataSender.sendData(waterLevel -> getWaterLevel(), waterLevel -> getState());
         break;
     
     case OFF:

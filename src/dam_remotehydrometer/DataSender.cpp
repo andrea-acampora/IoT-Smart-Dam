@@ -7,7 +7,7 @@ void DataSenderClass::init(String address)
   this->address = address;
 }
 
-void DataSenderClass::sendData(float value,char* state)
+void DataSenderClass::sendData(float value,String state)
 {
   if (WiFi.status() == WL_CONNECTED)
   {

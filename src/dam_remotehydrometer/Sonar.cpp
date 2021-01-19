@@ -23,6 +23,7 @@ float Sonar::getDistance(){
     float tUS = pulseIn(echoPin, HIGH);
     float t = tUS / 1000.0 / 1000.0 / 2;
     float d = t*vs;
+    Serial.println(d*100);
     return d*100;
 }
 

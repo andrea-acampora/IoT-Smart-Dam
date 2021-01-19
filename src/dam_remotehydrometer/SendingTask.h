@@ -13,7 +13,6 @@ private:
 
     WaterLevel* waterLevel;
     enum {ON, OFF} state; 
-    void sendData();
 
 public:
     SendingTask(WaterLevel* waterLevel);

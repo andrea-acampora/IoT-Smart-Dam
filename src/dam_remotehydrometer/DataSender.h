@@ -14,7 +14,7 @@ public:
 
   void init(String address);  
   
-  void sendData(float value,char* state);
+  void sendData(float value,String state);
 };
 
 extern DataSenderClass DataSender;
