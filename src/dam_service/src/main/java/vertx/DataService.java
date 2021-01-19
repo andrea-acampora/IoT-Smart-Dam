@@ -1,6 +1,7 @@
-package dam_service;
+package vertx;
 
 import io.vertx.core.AbstractVerticle;
+
 
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -10,6 +11,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
+import model.DataPoint;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,18 +19,21 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
+import controller.DamServiceController;
+
 /*
  * Data Service as a vertx event-loop 
  */
 public class DataService extends AbstractVerticle {
 
 	private int port;
-	private static final int MAX_SIZE = 10;
+	private DamServiceController controller;
 	private LinkedList<DataPoint> values;
 	
-	public DataService(int port) {
+	public DataService(final int port,final DamServiceController controller) {
 		values = new LinkedList<>();		
 		this.port = port;
+		this.controller = controller;
 	}
 
 	@Override
@@ -53,15 +58,9 @@ public class DataService extends AbstractVerticle {
 			sendError(400, response);
 		} else {
 			float value = res.getFloat("value");
-			String state = res.getString("place");
-			long time = System.currentTimeMillis();
-			
-			values.addFirst(new DataPoint(value, time, state));
-			if (values.size() > MAX_SIZE) {
-				values.removeLast();
-			}
-			
-			log("New value: " + value + " from " + state + " on " + new Date(time));
+			String state = res.getString("state");		
+			values.addFirst(new DataPoint(value, state));
+			this.controller.processData(new DataPoint(value, state));
 			response.setStatusCode(200).end();
 		}
 	}
@@ -70,9 +69,8 @@ public class DataService extends AbstractVerticle {
 		JsonArray arr = new JsonArray();
 		for (DataPoint p: values) {
 			JsonObject data = new JsonObject();
-			data.put("time", p.getTime());
 			data.put("value", p.getValue());
-			data.put("place", p.getPlace());
+			data.put("state", p.getState());
 			arr.add(data);
 		}
 		routingContext.response()
@@ -88,9 +86,7 @@ public class DataService extends AbstractVerticle {
 		System.out.println("[DATA SERVICE] "+msg);
 	}
 
-	public static void main(String[] args) {
-		Vertx vertx = Vertx.vertx();
-		DataService service = new DataService(8080);
-		vertx.deployVerticle(service);
+	public DamServiceController getDamServiceController() {
+		return controller;
 	}
 }

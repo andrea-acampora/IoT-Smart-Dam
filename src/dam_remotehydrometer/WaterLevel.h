@@ -2,8 +2,8 @@
 #define WATER_LEVEL
 
 
-#define PRE_ALARM_LEVEL 460 //a caso
-#define ALARM_LEVEL 496 //a caso
+#define PRE_ALARM_LEVEL 400 
+#define ALARM_LEVEL 460
 #include "Arduino.h"
 
 class WaterLevel
