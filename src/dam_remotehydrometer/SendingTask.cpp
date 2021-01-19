@@ -7,7 +7,7 @@ SendingTask::SendingTask(WaterLevel* waterLevel ){
 
 void SendingTask::init(int period){
     Task::init(period); 
-    state = OFF; 
+    state = ON; 
 }
 
 void SendingTask::tick(){

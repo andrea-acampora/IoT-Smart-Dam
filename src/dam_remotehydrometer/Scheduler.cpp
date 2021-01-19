@@ -1,6 +1,7 @@
 #include "Scheduler.h"
 
 volatile bool timerFlag;
+Ticker ticker;
 
 void timerHandler(void){
   timerFlag = true;
@@ -9,8 +10,8 @@ void timerHandler(void){
 void Scheduler::init(int basePeriod){
   this->basePeriod = basePeriod;
   timerFlag = false;
-  long period = basePeriod/1000;
-  this->ticker.attach(period, timerHandler);
+  float period = basePeriod/float(1000);
+  ticker.attach(period, timerHandler);
   nTasks = 0;
 }
 
@@ -28,7 +29,10 @@ void Scheduler::resetTaskList(){
 }
 
 void Scheduler::schedule(){
-  while (!timerFlag){ ESP.wdtFeed();}
+  while (!timerFlag){ 
+    //ESP.wdtFeed();
+    delay(1);
+}
   timerFlag = false;
   for (int i = 0; i < nTasks; i++){
     if (taskList[i]->isActive() && taskList[i]->updateAndCheckTime(basePeriod)){

@@ -1,8 +1,9 @@
 #ifndef WATER_LEVEL
 #define WATER_LEVEL
 
-#define PRE_ALARM_LEVEL 30 //a caso
-#define ALARM_LEVEL 70 //a caso
+
+#define PRE_ALARM_LEVEL 460 //a caso
+#define ALARM_LEVEL 496 //a caso
 #include "Arduino.h"
 
 class WaterLevel
@@ -10,6 +11,7 @@ class WaterLevel
 private:
     enum {NORMAL, PRE_ALARM, ALARM} state; 
     float level;
+    String getState();
     void setState(); 
 public:
     WaterLevel();

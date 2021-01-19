@@ -8,18 +8,18 @@ TrackingTask::TrackingTask(Hydrometer* hydrometer, WaterLevel* waterLevel){
 
 void TrackingTask::init(int period){
     Task::init(period); 
-    state = START; 
+    state = ON; 
 }
 
 void TrackingTask::tick(){
     switch (state)
     {
-    case START:
+    case ON:
+        waterLevel->setWaterLevel(this->hydrometer->getCurrentWaterLevel()); 
         break;
     
-    case ONTRACK:
-        float level = this->hydrometer->getCurrentWaterLevel(); 
-        waterLevel->setWaterLevel(level); 
+    case OFF:
+        this->setActive(false);
         break; 
     }
 }

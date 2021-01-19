@@ -23,14 +23,13 @@ float Sonar::getDistance(){
     float tUS = pulseIn(echoPin, HIGH);
     float t = tUS / 1000.0 / 1000.0 / 2;
     float d = t*vs;
-    return d;
+    return d*100;
 }
 
 float Sonar::getCurrentWaterLevel(){
-    return this->groundDistance - this->getDistance();
+    return this->groundDistance -this->getDistance();
 }
 
 float Sonar::getGroundDistance(){
     return this->groundDistance;
 }
-

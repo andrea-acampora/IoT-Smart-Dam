@@ -4,8 +4,8 @@
 /**
  * Contains all the global Experiment informations.
  */
-#define SONAR_TRIGGER_PIN D0
-#define SONAR_ECHO_PIN D1
+#define SONAR_TRIGGER_PIN D6
+#define SONAR_ECHO_PIN D7
 #define PIN_LED_ALARM D2
 #define PIN_TEMP A0
 
