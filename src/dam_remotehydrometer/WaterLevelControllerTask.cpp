@@ -18,8 +18,6 @@ void WaterLevelControllerTask::tick(){
     {
     case START:
         this->trackingTask->setActive(true);
-        this->sendingTask->setActive(true);
-        this->blinkingTask->setActive(true);
         this->state = WORKING; 
         break;
 
