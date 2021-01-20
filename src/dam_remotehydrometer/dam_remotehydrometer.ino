@@ -1,59 +1,89 @@
-#include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
+#include "Scheduler.h"
+#include "Task.h"
+#include "SendingTask.h"
+#include "TrackingTask.h"
+#include "BlinkingTask.h"
+#include "WaterLevel.h"
+#include "WaterLevelControllerTask.h"
+#include "Sonar.h"
+#include "Light.h"
+#include "Temp.h"
+#include "globals.h"
+#include "Led.h"
+#include "DataSender.h"
 
-/* wifi network name */
-char* ssidName = "Redmi";
-/* WPA2 PSK password */
-char* pwd = "12345678";
-/* service IP address */ 
-char* address = "http://f800bfaf527d.ngrok.io";
+Scheduler sched;
+
+WaterLevelControllerTask* waterLevelControllerTask;
+Task* blinkingTask;
+Task* trackingTask;
+Task* sendingTask;
+
+
+Light* led_alarm;
+Temp* temp;
+Hydrometer* hydrometer;
+
+WaterLevel* waterLevel;
+
+char* ssidName = "TIM-CASA";
+char* pwd = "tim3d208f6e03";
+char* address = "http://1d9abf9c1bed.ngrok.io";
+
 
 void setup() { 
-  Serial.begin(115200);                                
-  WiFi.begin(ssidName, pwd);
-  Serial.print("Connecting...");
-  while (WiFi.status() != WL_CONNECTED) {  
-    delay(500);
-    Serial.print(".");
-  } 
-  Serial.println("Connected: \n local IP: "+WiFi.localIP());
+  Serial.begin(115200);
+  setupWiFi(ssidName,pwd);
+  sched.init(50);
+  createComponents();
+  createTasks();
+  initTasks();
+  addTasks();                 
 }
 
-int sendData(String address, float value, String place){  
-   HTTPClient http;    
-   http.begin(address + "/api/data");      
-   http.addHeader("Content-Type", "application/json");     
-   String msg = 
-    String("{ \"value\": ") + String(value) + 
-    ", \"place\": \"" + place +"\" }";
-   int retCode = http.POST(msg);   
-   http.end();  
-      
-   // String payload = http.getString();  
-   // Serial.println(payload);      
-   return retCode;
+   
+void loop() {
+   sched.schedule();
 }
-   
-void loop() { 
- if (WiFi.status()== WL_CONNECTED){   
 
-   /* read sensor */
-   float value = (float) analogRead(A0) / 1023.0;
-   
-   /* send data */
-   Serial.print("sending "+String(value)+"...");    
-   int code = sendData(address, value, "home");
+void createComponents(){
+  DataSender.init(address);
+  led_alarm = new Led(PIN_LED_ALARM);
+  temp = new Temp(PIN_TEMP);
+  hydrometer = new Sonar(SONAR_TRIGGER_PIN, SONAR_ECHO_PIN,temp,GROUND_DISTANCE);
+  waterLevel = new WaterLevel();
+}
 
-   /* log result */
-   if (code == 200){
-     Serial.println("ok");   
-   } else {
-     Serial.println("error");
-   }
- } else { 
-   Serial.println("Error in WiFi connection");   
- }
- 
- delay(5000);  
- 
+void createTasks(){
+  blinkingTask = new BlinkingTask(led_alarm);
+  trackingTask = new TrackingTask(hydrometer,waterLevel);
+  sendingTask = new SendingTask(waterLevel);
+  waterLevelControllerTask = new WaterLevelControllerTask(trackingTask, sendingTask, blinkingTask, waterLevel,led_alarm);
+}
+
+void initTasks(){
+  blinkingTask -> init(100);
+  trackingTask -> init(100);
+  sendingTask -> init(100);
+  waterLevelControllerTask -> init(50);
+  waterLevelControllerTask -> setActive(true);
+}
+
+
+void addTasks(){
+  sched.addTask(waterLevelControllerTask);
+  sched.addTask(sendingTask);
+  sched.addTask(trackingTask);
+  sched.addTask(blinkingTask);
+}
+
+void setupWiFi(char* ssidName,char* pwd){
+    WiFi.begin(ssidName, pwd);
+    Serial.print("Connecting...");
+    while (WiFi.status() != WL_CONNECTED) {  
+      delay(500);
+      Serial.print(".");
+     } 
+  Serial.println("\n\n[+] Connected to: "+String(ssidName));
 }

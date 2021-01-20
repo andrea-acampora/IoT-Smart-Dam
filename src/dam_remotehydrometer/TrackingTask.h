@@ -8,7 +8,7 @@
 class TrackingTask : public Task
 {
 private:
-    enum {START, ONTRACK} state; 
+    enum {ON, OFF} state; 
     Hydrometer* hydrometer; 
     WaterLevel* waterLevel; 
     void track();

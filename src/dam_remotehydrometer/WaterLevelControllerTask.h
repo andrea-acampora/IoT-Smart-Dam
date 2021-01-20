@@ -6,18 +6,19 @@
 #include "TrackingTask.h"
 #include "SendingTask.h"
 #include "BlinkingTask.h"
-
+#include "Light.h"
 
 class WaterLevelControllerTask : public Task
 {
 private:
     enum {START, WORKING} state; 
-    TrackingTask* trackingTask; 
-    SendingTask* sendingTask; 
-    BlinkingTask* blinkingTask; 
+    Task* trackingTask; 
+    Task* sendingTask; 
+    Task* blinkingTask; 
     WaterLevel* waterLevel; 
+    Light* led_alarm;
 public:
-    WaterLevelControllerTask(TrackingTask* trackingTask, SendingTask* sendingTask, BlinkingTask* blinkingTask, WaterLevel* waterLevel);
+    WaterLevelControllerTask(Task* trackingTask,Task* sendingTask, Task* blinkingTask, WaterLevel* waterLevel,Light* led_alarm);
     void init(int period); 
     void tick(); 
 };

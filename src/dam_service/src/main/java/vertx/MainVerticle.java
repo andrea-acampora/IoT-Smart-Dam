@@ -1,4 +1,4 @@
-package dam_service;
+package vertx;
 
 import io.vertx.core.*;
 import io.vertx.core.json.JsonObject;
