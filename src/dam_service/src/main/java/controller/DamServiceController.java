@@ -1,43 +1,49 @@
 package controller;
 
+import java.sql.Timestamp;
+
+import db.Rilevazioni_Table;
+import db.model.Rilevazione;
 import model.Dam;
 import model.DataPoint;
 import model.Mode;
-import model.WaterLevel;
 import serial.CommChannel;
+import java.sql.Date;
 
 public class DamServiceController {
 
-	private WaterLevel waterLevel;
 	private Mode mode;
 	private Dam dam;
 	private CommChannel channel;
+	private Rilevazioni_Table rilevazioni;
 	private final static int DELTA_L = 4;
 	
-	public DamServiceController(final WaterLevel waterLevel, final Dam dam, final CommChannel channel) {
-		this.waterLevel = waterLevel;
-		this.dam = dam;
+	public DamServiceController(final Rilevazioni_Table rilevazioni, final CommChannel channel) {
+		this.dam = new Dam();
 		this.mode = Mode.AUTOMATIC;
 		this.channel = channel;
+		this.rilevazioni = rilevazioni;
 	}
 	
 	public void processData(final DataPoint data) {
-		float waterLevel = data.getValue();
-		String state = data.getState();
-		System.out.println("Water Level: " + waterLevel + " - State : " + state);
-		this.addData(waterLevel, state);
-		if(state=="ALARM" && this.mode==Mode.AUTOMATIC) {
-			openDam();
+		Rilevazione rilevazione = new Rilevazione();
+		rilevazione.setWaterLevel(data.getValue());
+		rilevazione.setState(data.getState());
+		System.out.println("Water Level: " + rilevazione.getWaterLevel() + " - State : " + rilevazione.getState());
+		if(rilevazione.getState()=="ALARM" && this.mode==Mode.AUTOMATIC) {
+			openDam(rilevazione);
 			this.channel.sendMsg(String.valueOf(this.dam.getDamOpeningLevel()));
 		}
-		//PUSH TO DB
+		rilevazione.setModality(String.valueOf(this.mode));
+		rilevazione.setTimeStamp(new Timestamp(System.currentTimeMillis()));
+		this.rilevazioni.persist(rilevazione);
 	}
 	
-	private void openDam() {
+	private void openDam(Rilevazione rilevazione) {
 		System.out.println("OPENING DAM....");
-		float level = this.waterLevel.getWaterLevel();
+		float level = rilevazione.getWaterLevel();
 		if(level < 460) {
-			this.waterLevel.setState("NORMAL");
+			rilevazione.setState("NORMAL");
 			dam.setDamOpeningLevel(0);
 		}else if(level >=460 && level <460+DELTA_L) {
 			dam.setDamOpeningLevel(20);
@@ -50,11 +56,6 @@ public class DamServiceController {
 		}else if(level >=460+4*DELTA_L) {
 			dam.setDamOpeningLevel(100);
 		}
-	}
-
-	private void addData(float waterLevel, String state) {
-		this.waterLevel.setWaterLevel(waterLevel);
-		this.waterLevel.setState(state);
 	}
 	
 }
