@@ -43,7 +43,7 @@ public class DamServiceController {
 		System.out.println("OPENING DAM....");
 		float level = rilevazione.getWaterLevel();
 		if(level < 460) {
-			rilevazione.setState("NORMAL");
+			rilevazione.setState("PRE_ALARM");
 			dam.setDamOpeningLevel(0);
 		}else if(level >=460 && level <460+DELTA_L) {
 			dam.setDamOpeningLevel(20);
@@ -57,5 +57,4 @@ public class DamServiceController {
 			dam.setDamOpeningLevel(100);
 		}
 	}
-	
 }

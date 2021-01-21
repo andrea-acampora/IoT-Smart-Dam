@@ -12,9 +12,7 @@ public class DBConnection {
         
        Connection connection = null;
         try {
-            System.out.println("DataSource.getConnection() driver = "+driver);
             Class.forName(driver);
-            System.out.println("DataSource.getConnection() dbUri = "+dbUri);
             connection = DriverManager.getConnection(dbUri, userName, password);
         }
         catch (ClassNotFoundException e) {
