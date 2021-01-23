@@ -39,6 +39,10 @@ public class DamServiceController {
 		this.rilevazioni.persist(rilevazione);
 	}
 	
+	public Rilevazione getLastData() {
+		return this.rilevazioni.getLastData(); 
+	}
+	
 	private void openDam(Rilevazione rilevazione) {
 		System.out.println("OPENING DAM....");
 		float level = rilevazione.getWaterLevel();
