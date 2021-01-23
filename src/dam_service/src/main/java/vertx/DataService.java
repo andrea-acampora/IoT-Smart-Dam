@@ -73,14 +73,20 @@ public class DataService extends AbstractVerticle {
 //		}
 //		routingContext.response()
 //			.putHeader("content-type", "application/json")
+//			.putHeader("Access-Control-Allow-Origin","*")
+//			.putHeader("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE")
 //			.end(arr.encodePrettily());
 		JsonArray arr = new JsonArray();
 		Rilevazione rilevazione = this.controller.getLastData();
 		JsonObject data = new JsonObject();
 		data.put("value", rilevazione.getWaterLevel());
 		data.put("state", rilevazione.getState());
-		data.put("timeStamp", rilevazione.getTimeStamp());
-		routingContext.response().putHeader("content-type", "application/json").end(arr.encodePrettily());
+		data.put("timeStamp", String.valueOf(rilevazione.getTimeStamp()));
+		arr.add(data);
+		routingContext.response().putHeader("content-type", "application/json")
+								.putHeader("Access-Control-Allow-Origin","*")
+								.putHeader("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE")
+								.end(arr.encodePrettily());
 
 	}
 
