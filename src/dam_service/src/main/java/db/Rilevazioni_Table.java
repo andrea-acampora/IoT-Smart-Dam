@@ -57,7 +57,7 @@ public class Rilevazioni_Table {
 
 		Connection connection = this.dataSource.getMySQLConnection();
 		PreparedStatement statement = null;
-		String query = "select * from " + tableName + "ORDER BY timeStamp LIMIT 1";
+		String query = "select * from " + tableName + " ORDER BY timeStamp DESC LIMIT 1";
 		try {
 			statement = connection.prepareStatement(query);
 			ResultSet result = statement.executeQuery();
