@@ -1,2 +1,2 @@
-include ':app'
+include ':app',':bt-lib'
 rootProject.name = "DamMobileApp"

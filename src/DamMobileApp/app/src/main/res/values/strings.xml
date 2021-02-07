@@ -3,10 +3,10 @@
     <string name="state">state</string>
     <string name="level">Level</string>
     <string name="opening">Opening</string>
-    <string name="go_to_manual">GO TO MANUAL</string>
+    <string name="manual">manual</string>
     <string name="_20">20%</string>
     <string name="_40">40%</string>
-    <string name="_80">80%</string>
     <string name="_60">60%</string>
+    <string name="_80">80%</string>
     <string name="_100">100%</string>
 </resources>
