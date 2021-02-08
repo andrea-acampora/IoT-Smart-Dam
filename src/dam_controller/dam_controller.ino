@@ -1,60 +1,40 @@
-#include "Scheduler.h"
-#include "Arduino.h"
-#include "Task.h"
-#include "BlinkingTask.h"
-#include "DamControllerTask.h"
-#include "InputTask.h"
+#include "Dam_Async_FSM.h"
 #include "Light.h"
-#include "globals.h"
 #include "Led.h"
-#include "Dam.h"
-#include "MsgService.h"
+#include "ServoMotor.h"
+#include "globals.h"
+#include "SerialConsole.h"
+#include "ConsoleBT.h"
 
 
-Scheduler sched;
+Light* led; 
+ServoMotor* servo;
+SerialConsole* console;
+ConsoleBT* consoleBT;
 
-Task* blinkingTask;
-Task* damControllerTask;
-Task* inputTask;
+Dam_Async_FSM* myAsincFSM;
 
-Light* led_dam;
-Dam* dam;
-
-
-
-void setup() { 
-  MsgService.init();
-  sched.init(100);
-  createComponents();
-  createTasks();
-  initTasks();
-  addTasks();                 
+void setup() {
+  Serial.begin(9600);
+  led = new Led(PIN_LED_DAM);
+  servo = new ServoMotor(PIN_SERVO);
+  console = new SerialConsole();
+  consoleBT = new ConsoleBT();
+  myAsincFSM = new Dam_Async_FSM(led,servo,console,consoleBT);
 }
 
-   
 void loop() {
-   sched.schedule();
+  myAsincFSM->checkEvents();
 }
 
-void createComponents(){
-  led_dam= new Led(PIN_LED_DAM);
-  dam = new Dam();
-}
-
-void createTasks(){
-  blinkingTask = new BlinkingTask(led_dam);
-  inputTask = new InputTask(dam);
-  damControllerTask = new DamControllerTask(blinkingTask,inputTask,dam);
-}
-
-void initTasks(){
-  blinkingTask -> init(200);
-  inputTask -> init(100);
-  damControllerTask -> init(100);
-}
-
-
-void addTasks(){
-  sched.addTask(damControllerTask);
-  sched.addTask(blinkingTask);
-}
+/*
+void startSleepMode(){
+  //Serial.println( "Going to sleep....\n" );
+  Serial.flush();
+  set_sleep_mode( SLEEP_MODE_IDLE );
+  power_all_disable();
+  power_usart0_enable();
+  sleep_mode();
+  power_all_enable();
+  //Serial.println( "...Awake !\n" );
+}*/
