@@ -5,6 +5,8 @@
 #include "Event.h"
 #include "EventQueue.h"
 #include "Arduino.h"
+#include <avr/sleep.h>
+#include <avr/power.h>
 
 /**
  * Base abstract class for implementing asynchronous
@@ -20,7 +22,8 @@ class AsyncFSM : public Observer {
 public:
   virtual void handleEvent(Event* ev) = 0;
   void notifyEvent(Event* ev);  
-  void checkEvents();  
+  void checkEvents();
+  void startSleepMode();  
 
 protected:
   AsyncFSM();    

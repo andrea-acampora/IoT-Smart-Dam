@@ -1,7 +1,7 @@
 #ifndef __SERVOMOTOR__
 #define __SERVOMOTOR__
 
-#include <Arduino.h>
+#include "Arduino.h"
 #include "ServoTimer2.h"
 
 class ServoMotor {
@@ -16,6 +16,7 @@ public:
 private:
   int pin; 
   ServoTimer2 motor; 
+
 };
 
 #endif

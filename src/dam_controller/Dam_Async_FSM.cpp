@@ -17,6 +17,7 @@ void Dam_Async_FSM::handleEvent(Event* ev){
         break;
     case ON:
         if(ev -> getType() == MSG_DAM_OPENING){
+          Serial.println(String(ev->getMessage()));
           int dam_opening_level = ev -> getMessage().toInt();
           this -> openDam(dam_opening_level);
           //FARE LAMPEGGIARE IL LED PERCHÈ SEI IN STATO ALLARME ---- TO-DO !!!!!!!!!!!!!!
@@ -33,6 +34,10 @@ void Dam_Async_FSM::handleEvent(Event* ev){
 
 void Dam_Async_FSM::openDam(int dam_opening_level){
       this -> servo -> on();
-      this -> servo -> setPosition(dam_opening_level*1.8);
+      for (int i = 0; i < dam_opening_level*1.8; i++) {
+           this -> servo->setPosition(i);         
+           delay(10);            
+      }
+      //this -> servo -> setPosition(dam_opening_level*1.8);
       this -> servo -> off();
 }
