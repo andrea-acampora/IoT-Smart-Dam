@@ -60,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void initUI() {
+       try {
+            connectToBTServer();
+        } catch (BluetoothDeviceNotFound bluetoothDeviceNotFound) {
+            bluetoothDeviceNotFound.printStackTrace();
+        }
+
         tryHttpGet();
 
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
@@ -71,15 +77,15 @@ public class MainActivity extends AppCompatActivity {
                 String toSend = "20";
                 switch (checkedId){
                     case R.id.button20:
-                        toSend = "20";
+                        toSend = "P=20F";
                     case R.id.button40:
-                        toSend = "40";
+                        toSend = "P=40F";
                     case R.id.button60:
-                        toSend = "60";
+                        toSend = "P=60F";
                     case R.id.button80:
-                        toSend = "80";
+                        toSend = "P=80F";
                     case R.id.button100:
-                        toSend = "100";
+                        toSend = "P=100F";
                 }
                 btChannel.sendMessage(toSend);
             }
@@ -99,17 +105,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void tryHttpGet(){
-        final String url = "http://dummy.restapiexample.com/api/v1/employee/1";
+        final String url = "http://042c464fe0ae.ngrok.io/api/data";
         Http.get(url, response -> {
             if(response.code() == HttpURLConnection.HTTP_OK) {
                 try {
                     JSONObject content = response.contentAsJson();
-                   // ((TextView) findViewById(R.id.level)).setText(content.getString("level"));
-                    ((TextView) findViewById(R.id.state)).setText(content.getString("status"));
-                  //  ((TextView) findViewById(R.id.opening)).setText(content.getString("opening"));
+                    ((TextView) findViewById(R.id.level)).setText(content.getString("value"));
+                    ((TextView) findViewById(R.id.state)).setText(content.getString("state"));
+                    //((TextView) findViewById(R.id.opening)).setText(content.getString("opening"));
 
-                    if (content.has("status")) {
-                        if (content.getString("status").equals("success")) {
+                    if (content.has("state")) {
+                        if (content.getString("state").equals("ALARM")) {
                             findViewById(R.id.modeButton).setEnabled(true);
                             findViewById(R.id.radioGroup).setVisibility(View.VISIBLE);
                         } else {
@@ -127,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void tryHttpPost(String mode) throws JSONException {
 
-        final String url = "http://dummy.restapiexample.com/api/v1/employee/1";
+        final String url = "http://042c464fe0ae.ngrok.io/api/data";
         final String content = new JSONObject()
                 .put("mode",mode).toString();
 

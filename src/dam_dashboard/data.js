@@ -5,13 +5,13 @@ $(document).ready(function () {
 	let y = 0; 
 	const levels_length = 6
 	let requestLoop = setInterval(function(){
-		$.getJSON('https://jsonplaceholder.typicode.com/todos/1', function (data) {
+		$.getJSON('http://042c464fe0ae.ngrok.io/api/data', function (data) {
 			 console.log(data);
 			let state = data.state; 
-			let level = data.level; 
+			let level = data.value; 
 			let mode = data.mode; 
 			let opening = data.opening; 
-			let timestamp = data.timestamp; 
+			let timestamp = data.timeStamp; 
 
 			levels.push(new Array(level, timestamp));
 			if(levels.length > levels_length){

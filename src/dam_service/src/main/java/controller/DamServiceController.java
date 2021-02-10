@@ -44,7 +44,6 @@ public class DamServiceController {
 	}
 	
 	private void openDam(Rilevazione rilevazione) {
-		System.out.println("OPENING DAM....");
 		float level = rilevazione.getWaterLevel();
 		if(level < 460) {
 			rilevazione.setState("PRE_ALARM");
