@@ -1,0 +1,8 @@
+.state, .mode, .opening{
+    text-align:center;
+    font-size: 60px;
+}
+
+.current-level{
+    font-size: 30px; 
+}

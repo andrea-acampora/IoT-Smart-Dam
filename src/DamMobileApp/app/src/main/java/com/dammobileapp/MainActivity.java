@@ -1,6 +1,7 @@
 package com.dammobileapp;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,8 +22,14 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.BufferUnderflowException;
+import java.util.UUID;
 
 import unibo.btlib.BluetoothChannel;
+import unibo.btlib.BluetoothUtils;
+import unibo.btlib.ConnectToBluetoothServerTask;
+import unibo.btlib.ConnectionTask;
+import unibo.btlib.RealBluetoothChannel;
+import unibo.btlib.exceptions.BluetoothDeviceNotFound;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -43,6 +50,14 @@ public class MainActivity extends AppCompatActivity {
 
         initUI();
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        btChannel.close();
+    }
+
 
     private void initUI() {
         tryHttpGet();
@@ -125,5 +140,46 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void connectToBTServer() throws BluetoothDeviceNotFound {
+        final BluetoothDevice serverDevice = BluetoothUtils.getPairedDeviceByName(C.bluetooth.BT_DEVICE_ACTING_AS_SERVER_NAME);
+
+        final UUID uuid = BluetoothUtils.getEmbeddedDeviceDefaultUuid();
+        //final UUID uuid = BluetoothUtils.generateUuidFromString(C.bluetooth.BT_SERVER_UUID);
+
+        new ConnectToBluetoothServerTask(serverDevice, uuid, new ConnectionTask.EventListener() {
+            @Override
+            public void onConnectionActive(final BluetoothChannel channel) {
+
+                /*((TextView) findViewById(R.id.statusLabel)).setText(String.format("Status : connected to server on device %s",
+                        serverDevice.getName()));
+
+                findViewById(R.id.connectBtn).setEnabled(false);*/
+
+                btChannel = channel;
+                btChannel.registerListener(new RealBluetoothChannel.Listener() {
+                    @Override
+                    public void onMessageReceived(String receivedMessage) {
+                        /*((TextView) findViewById(R.id.chatLabel)).append(String.format("> [RECEIVED from %s] %s\n",
+                                btChannel.getRemoteDeviceName(),
+                                receivedMessage));*/
+                    }
+
+                    @Override
+                    public void onMessageSent(String sentMessage) {
+                        /*((TextView) findViewById(R.id.chatLabel)).append(String.format("> [SENT to %s] %s\n",
+                                btChannel.getRemoteDeviceName(),
+                                sentMessage));*/
+                    }
+                });
+            }
+
+            @Override
+            public void onConnectionCanceled() {
+                /*((TextView) findViewById(R.id.statusLabel)).setText(String.format("Status : unable to connect, device %s not found!",
+                        C.bluetooth.BT_DEVICE_ACTING_AS_SERVER_NAME));*/
+            }
+        }).execute();
     }
 }
