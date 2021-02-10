@@ -28,12 +28,12 @@ void WaterLevelControllerTask::tick(){
             this->sendingTask->setActive(false);
         }else if(this->waterLevel->isPreAlarm()){
             this->blinkingTask->setActive(true); 
-            //settare frequenza di sending
+            //settare frequenza di sending        //////////IMPORTANTE SUGG: GUARDARE SE È CAMBIATO STATO
             this->sendingTask->setActive(true); 
         }else if(this->waterLevel->isAlarm()){
             this->blinkingTask->setActive(false); 
             this->led_alarm->switchOn();
-            //settare frequenza di sending 
+            //settare frequenza di sending           //////////IMPORTANTE
             this->sendingTask->setActive(true); 
         }
         break;
