@@ -95,8 +95,16 @@ public class MainActivity extends AppCompatActivity {
         mode.setOnClickListener(v -> {
            String modeText = (String) ((Button) findViewById(R.id.modeButton)).getText();
            try {
-                mode.setText(modeText == "MANUAL"? "AUTOMATIC" : "MANUAL");
-                tryHttpPost(modeText == "MANUAL"? "AUTOMATIC" : "MANUAL");
+               tryHttpPost(modeText);
+               if(modeText =="MANUAL"){
+                   findViewById(R.id.radioGroup).setVisibility(View.VISIBLE);
+                   modeText = "AUTOMATIC";
+               }else if(modeText == "AUTOMATIC"){
+                   modeText = "MANUAL";
+               }
+                //mode.setText(modeText);
+
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -110,19 +118,30 @@ public class MainActivity extends AppCompatActivity {
             if(response.code() == HttpURLConnection.HTTP_OK) {
                 try {
                     JSONObject content = response.contentAsJson();
-                    ((TextView) findViewById(R.id.level)).setText(content.getString("value"));
-                    ((TextView) findViewById(R.id.state)).setText(content.getString("state"));
+                    //((TextView) findViewById(R.id.level)).setText(content.getString("value"));
+                    //((TextView) findViewById(R.id.state)).setText(content.getString("state"));
                     //((TextView) findViewById(R.id.opening)).setText(content.getString("opening"));
 
                     if (content.has("state")) {
                         if (content.getString("state").equals("ALARM")) {
                             findViewById(R.id.modeButton).setEnabled(true);
-                            findViewById(R.id.radioGroup).setVisibility(View.VISIBLE);
                         } else {
                             findViewById(R.id.modeButton).setEnabled(false);
                             findViewById(R.id.radioGroup).setVisibility(View.GONE);
                         }
                     }
+
+                    if (content.has("value")) {
+                        ((TextView) findViewById(R.id.level)).setText(content.getString("value"));
+                    }
+
+
+                    if (content.has("opening")) {
+                        ((TextView) findViewById(R.id.opening)).setText(content.getString("opening"));
+                    }
+
+
+
                     } catch(IOException | JSONException e){
                         e.printStackTrace();
                     }
