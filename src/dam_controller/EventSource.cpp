@@ -25,7 +25,7 @@ void notifyInterrupt_10(){ interruptDispatcher.notifyInterrupt(10); }
 void notifyInterrupt_11(){ interruptDispatcher.notifyInterrupt(11); }
 void notifyInterrupt_12(){ interruptDispatcher.notifyInterrupt(12); }
 void notifyInterrupt_13(){ interruptDispatcher.notifyInterrupt(13); }
-
+void notifyTimer0Interrupt(){ interruptDispatcher.notifyTimerInterrupt(); }
 
 InterruptDispatcher::InterruptDispatcher(){
   notifyFunctions[0] = notifyInterrupt_0;
@@ -42,6 +42,7 @@ InterruptDispatcher::InterruptDispatcher(){
   notifyFunctions[11] = notifyInterrupt_11;
   notifyFunctions[12] = notifyInterrupt_12;
   notifyFunctions[13] = notifyInterrupt_13;
+  notifyTimerFunction = notifyTimer0Interrupt;
 }
     
 void InterruptDispatcher::bind(int pin, EventSource* src){
@@ -49,14 +50,31 @@ void InterruptDispatcher::bind(int pin, EventSource* src){
   enableInterrupt(pin, notifyFunctions[pin], CHANGE);  
 }
 
+void InterruptDispatcher::bindTimerInterrupt(EventSource* src){
+    timer0.attachInterrupt(notifyTimerFunction);
+    timer0.start();
+    timerEventSource = src;
+}
 void InterruptDispatcher::notifyInterrupt(int pin){
   Serial.print("");  /* bug/race fix */
-  sourceRegisteredOnPin[pin]->notifyInterrupt(pin);
+  sourceRegisteredOnPin[pin]->notifyInterrupt();
 }
+
+void InterruptDispatcher::notifyTimerInterrupt(){
+  Serial.print("");  /* bug/race fix */
+  timerEventSource  -> notifyInterrupt();
+}
+
 
 void EventSource::bindInterrupt(int pin){
   interruptDispatcher.bind(pin, this);
 }
+
+void EventSource::bindTimerInterrupt(int period){
+     timer0.setPeriod(period);
+    interruptDispatcher.bindTimerInterrupt(this);
+}
+
 
 void EventSource::generateEvent(Event* ev) {
   if (observer != NULL){

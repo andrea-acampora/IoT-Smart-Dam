@@ -8,6 +8,8 @@ public class Rilevazione {
     private String state;
     private String modality;
     private Timestamp timeStamp;
+    private int opening;
+    
     private float waterLevel; 
 
     public float getWaterLevel() {
@@ -34,6 +36,9 @@ public class Rilevazione {
         this.timeStamp = timeStamp;
     }
 
+    public void setOpening(int value) {
+    	this.opening = value;
+    }
     public int getId() {
         return id;
     }
@@ -48,6 +53,10 @@ public class Rilevazione {
 
     public Timestamp getTimeStamp() {
         return timeStamp;
+    }
+    
+    public int getOpening() {
+    	return this.opening;
     }
 
 }

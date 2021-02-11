@@ -12,3 +12,7 @@ void Led::switchOn(){
 void Led::switchOff(){
     digitalWrite(pin, LOW); 
 }; 
+
+bool Led::isOn(){
+    return digitalRead(pin)==HIGH;
+}; 

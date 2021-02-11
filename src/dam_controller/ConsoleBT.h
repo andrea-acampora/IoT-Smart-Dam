@@ -18,7 +18,7 @@ class ConsoleBT : public EventSource{
     
     public:
         ConsoleBT();
-        void notifyInterrupt(int pin);
+        void notifyInterrupt();
 
 }; 
 

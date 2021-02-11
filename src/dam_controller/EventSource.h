@@ -3,6 +3,7 @@
 
 #include "Observer.h"
 #include "Event.h"
+#include "timerZero.h"
 
 #define NUM_PINS 13
 
@@ -14,10 +15,11 @@
 class EventSource {
   public:
     void registerObserver(Observer* observer);
-    virtual void notifyInterrupt(int pin);
+    virtual void notifyInterrupt();
 
   protected:
     void bindInterrupt(int pin);
+    void bindTimerInterrupt(int period);
     void generateEvent(Event* ev);
 
     Observer* observer;
@@ -30,10 +32,15 @@ class InterruptDispatcher {
   public:
     InterruptDispatcher();        
     void bind(int pin, EventSource* src);
+    void bindTimerInterrupt(EventSource* src);
     void notifyInterrupt(int pin);
+    void notifyTimerInterrupt();
+
   private:
     EventSource* sourceRegisteredOnPin[NUM_PINS];
+    EventSource* timerEventSource;
     void (*notifyFunctions[NUM_PINS])() = {};
+    void (*notifyTimerFunction)() = {};
 };
 
 #endif;

@@ -5,8 +5,8 @@ $(document).ready(function () {
 	let y = 0;
 	const levels_length = 6
 	let requestLoop = setInterval(function () {
-		$.getJSON('http://042c464fe0ae.ngrok.io/api/data', function (data) {
-			
+		$.getJSON('http://60c4552e5136.ngrok.io/api/data', function (data) {
+			console.log(data);
 			let state = data.state;
 			let timestamp;
 			let level;
@@ -21,7 +21,7 @@ $(document).ready(function () {
 
 			$(".state").text(state);
 
-			if ("level" in data) {
+			if ("value" in data) {
 				timestamp = data.timeStamp;
 				level = data.value;
 				levels.push(new Array(level, timestamp));
@@ -41,8 +41,8 @@ $(document).ready(function () {
 				levels = []; 
 			}
 
-			if("mode" in data) {
-				mode = data.mode;
+			if("modality" in data) {
+				mode = data.modality;
 				$(".mode").text(mode);
 			}
 			

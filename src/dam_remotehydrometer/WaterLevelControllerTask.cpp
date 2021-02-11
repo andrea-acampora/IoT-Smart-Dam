@@ -22,20 +22,23 @@ void WaterLevelControllerTask::tick(){
         break;
 
     case WORKING:
-        if(this->waterLevel->isNormal()){
+        if(this -> waterLevel -> isStateChanged()){
+          if(this->waterLevel->isNormal()){
             this->led_alarm->switchOff();
             this->blinkingTask->setActive(false); 
             this->sendingTask->setActive(false);
+            DataSender.sendData(waterLevel -> getWaterLevel(), "NORMAL");
         }else if(this->waterLevel->isPreAlarm()){
-            this->blinkingTask->setActive(true); 
-            //settare frequenza di sending        //////////IMPORTANTE SUGG: GUARDARE SE È CAMBIATO STATO
+            this->blinkingTask->setActive(true);
+            this -> sendingTask -> setPeriod(FREQ_1); 
             this->sendingTask->setActive(true); 
         }else if(this->waterLevel->isAlarm()){
             this->blinkingTask->setActive(false); 
             this->led_alarm->switchOn();
-            //settare frequenza di sending           //////////IMPORTANTE
+            this -> sendingTask -> setPeriod(FREQ_2); 
             this->sendingTask->setActive(true); 
         }
-        break;
     } 
+            break;
+  }
 }

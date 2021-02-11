@@ -4,7 +4,7 @@ SerialConsole::SerialConsole(){
   bindInterrupt(SERIAL_RX_PIN);
 }
 
-void SerialConsole::notifyInterrupt(int pin){
+void SerialConsole::notifyInterrupt(){
     while (Serial.available()) {
     char ch = (char) Serial.read();
       this -> content += ch;  
@@ -18,6 +18,16 @@ void SerialConsole::notifyInterrupt(int pin){
          Event* msgReceived = new MsgReceivedEvent(MSG_MODE_CHANGED,content.substring(2));
          this -> generateEvent(msgReceived);
          this -> content = ""; 
+       }else if(content == "START"){
+          Event* msgReceived = new MsgReceivedEvent(COMUNICATION_INFO, content);
+         this -> generateEvent(msgReceived);
+         this -> content = ""; 
+       }
+       else if(content == "STOP"){
+        Event* msgReceived = new MsgReceivedEvent(COMUNICATION_INFO, content);
+         this -> generateEvent(msgReceived);
+         this -> content = ""; 
+         
        }
       }   
     }

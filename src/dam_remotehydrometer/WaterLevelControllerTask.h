@@ -7,6 +7,8 @@
 #include "SendingTask.h"
 #include "BlinkingTask.h"
 #include "Light.h"
+#include "globals.h"
+#include "DataSender.h"
 
 class WaterLevelControllerTask : public Task
 {
@@ -17,6 +19,7 @@ private:
     Task* blinkingTask; 
     WaterLevel* waterLevel; 
     Light* led_alarm;
+    
 public:
     WaterLevelControllerTask(Task* trackingTask,Task* sendingTask, Task* blinkingTask, WaterLevel* waterLevel,Light* led_alarm);
     void init(int period); 

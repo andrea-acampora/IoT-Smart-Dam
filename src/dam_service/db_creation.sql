@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS  `rilevazioni` (
     `waterLevel` FLOAT(10) NOT NULL,
     `state` VARCHAR(10) NOT NULL,
     `modality` VARCHAR(10) NOT NULL,
+    `opening` INT(3) NOT NULL,
     PRIMARY KEY (`id`)
 );
 

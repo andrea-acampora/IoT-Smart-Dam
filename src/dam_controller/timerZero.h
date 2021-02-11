@@ -1,11 +1,5 @@
-/*
- * Definition of a class for the management of the 16 bit Timer1 on the ATmega328P mounted on an Arduino Uno.
- * Authors: Giorgia Rondinini, Matteo Castellucci
- * Date: 17-10-2019
- */
-
-#ifndef __TIMER_0__
-#define __TIMER_0__
+#ifndef __TIMERZERO__
+#define __TIMERZERO__
 
 #include "Arduino.h"
 
@@ -21,7 +15,7 @@ class timerZero {
         /*
          * Returns a pointer to the only instance of this class.
          */
-        static MiniTimerOne *getInstance();
+        static timerZero *getInstance();
         /* 
          * Initializes the timer so as to use the CTC (Clear Timer on Compare match) timer mode, stop the timer from
          * counting CPU clock cycles and reset its counter to zero.
@@ -60,7 +54,7 @@ class timerZero {
          */
         void (*getCallback(void))(void);
     private:
-        static timeZero *SINGLETON;
+        static timerZero *SINGLETON;
 
         timerZero(void);
 
@@ -70,6 +64,6 @@ class timerZero {
 };
 
 //Global variable accessible from the Arduino code for facilitating the use of this timer library
-extern timerZero timerZero;
+extern timerZero timer0;
 
 #endif

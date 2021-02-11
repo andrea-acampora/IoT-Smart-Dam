@@ -19,7 +19,7 @@ public class RunService extends AbstractVerticle {
 	private final static int PORT = 8080;
 	
 	public static void main(String[] args) throws Exception {
-        CommChannel channel = new SerialCommChannel("/dev/ttyACM0",9600);
+        CommChannel channel = new SerialCommChannel("/dev/ttyACM2",9600);
 		Rilevazioni_Table rilevazioni = new Rilevazioni_Table();
 		DamServiceController controller = new DamServiceController(rilevazioni,channel);
 		Vertx vertx = Vertx.vertx();

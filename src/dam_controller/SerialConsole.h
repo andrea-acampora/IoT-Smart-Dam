@@ -14,7 +14,7 @@ class SerialConsole : public EventSource{
     
     public:
         SerialConsole();
-        virtual void notifyInterrupt(int pin);
+        virtual void notifyInterrupt();
 }; 
 
 #endif

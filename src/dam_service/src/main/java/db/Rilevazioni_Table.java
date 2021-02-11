@@ -27,12 +27,13 @@ public class Rilevazioni_Table {
 		}
 
 		PreparedStatement statement = null;
-		String insert = "insert into " + tableName + " (state, modality, waterLevel) values (?,?,?)";
+		String insert = "insert into " + tableName + " (state, modality, waterLevel, opening) values (?,?,?,?)";
 		try {
 			statement = connection.prepareStatement(insert);
 			statement.setString(1, rilevazione.getState());
 			statement.setString(2, rilevazione.getModality());
 			statement.setFloat(3, rilevazione.getWaterLevel());
+			statement.setInt(4, rilevazione.getOpening());
 			statement.executeUpdate();
 		}
 
@@ -68,6 +69,7 @@ public class Rilevazioni_Table {
 				rilevazione.setModality(result.getString("modality"));
 				rilevazione.setTimeStamp(result.getTimestamp("timeStamp"));
 				rilevazione.setWaterLevel(result.getFloat("waterLevel"));
+				rilevazione.setOpening(result.getInt("opening"));
 			}
 		} catch (SQLException e) {
 			new Exception(e.getMessage());
@@ -103,6 +105,8 @@ public class Rilevazioni_Table {
 				rilevazione.setModality(result.getString("modality"));
 				rilevazione.setTimeStamp(result.getTimestamp("timeStamp"));
 				rilevazione.setWaterLevel(result.getFloat("waterLevel"));
+				rilevazione.setOpening(result.getInt("opening"));
+
 			}
 		} catch (SQLException e) {
 			new Exception(e.getMessage());

@@ -6,7 +6,7 @@ ConsoleBT::ConsoleBT(){
   bindInterrupt(RX_PIN);
 }
 
-void ConsoleBT::notifyInterrupt(int pin){
+void ConsoleBT::notifyInterrupt(){
     while (this -> channel.available()) {
       char ch = (char) this -> channel.read();
       this -> content += ch;  

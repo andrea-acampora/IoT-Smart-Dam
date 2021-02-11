@@ -12,6 +12,7 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 import model.DataPoint;
+import model.Mode;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +43,7 @@ public class DataService extends AbstractVerticle {
 		Router router = Router.router(vertx);
 		router.route().handler(BodyHandler.create());
 		router.post("/api/data").handler(this::handleAddNewData);
+		router.post("/api/mode").handler(this::handleChangeMode);
 		router.get("/api/data").handler(this::handleGetData);
 		vertx.createHttpServer().requestHandler(router).listen(port);
 
@@ -50,7 +52,6 @@ public class DataService extends AbstractVerticle {
 
 	private void handleAddNewData(RoutingContext routingContext) {
 		HttpServerResponse response = routingContext.response();
-		// log("new msg "+routingContext.getBodyAsString());
 		JsonObject res = routingContext.getBodyAsJson();
 		if (res == null) {
 			sendError(400, response);
@@ -63,26 +64,38 @@ public class DataService extends AbstractVerticle {
 		}
 	}
 
+	private void handleChangeMode(RoutingContext routingContext) {
+		HttpServerResponse response = routingContext.response();
+		JsonObject res = routingContext.getBodyAsJson();
+		System.out.println(res);
+		if (res == null) {
+			sendError(400, response);
+		} else {
+			if(res.getString("mode").equals("manual")) {
+				this.controller.setMode(Mode.MANUAL);
+			}else if(res.getString("mode").equals("automatic")) {
+				this.controller.setMode(Mode.AUTOMATIC);
+			}
+			response.setStatusCode(200).end();
+		}
+	}
+	
 	private void handleGetData(RoutingContext routingContext) {
-//		JsonArray arr = new JsonArray();
-//		for (DataPoint p: values) {
-//			JsonObject data = new JsonObject();
-//			data.put("value", p.getValue());
-//			data.put("state", p.getState());
-//			arr.add(data);
-//		}
-//		routingContext.response()
-//			.putHeader("content-type", "application/json")
-//			.putHeader("Access-Control-Allow-Origin","*")
-//			.putHeader("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE")
-//			.end(arr.encodePrettily());
-		//JsonArray arr = new JsonArray();
 		Rilevazione rilevazione = this.controller.getLastData();
 		JsonObject data = new JsonObject();
-		data.put("value", rilevazione.getWaterLevel());
-		data.put("state", rilevazione.getState());
-		data.put("timeStamp", String.valueOf(rilevazione.getTimeStamp()));
-		//arr.add(data);
+		data.put("state", this.controller.getSystemState());
+
+		if(this.controller.getSystemState().equals("PRE_ALARM")) {
+			data.put("value", rilevazione.getWaterLevel());
+			data.put("timeStamp", String.valueOf(rilevazione.getTimeStamp()));
+		}else  if(this.controller.getSystemState().equals("ALARM")) {
+			if(this.controller.getMode()==Mode.MANUAL) {
+				data.put("modality", "MANUAL");
+			}
+			data.put("value", rilevazione.getWaterLevel());
+			data.put("timeStamp", String.valueOf(rilevazione.getTimeStamp()));
+			data.put("opening", String.valueOf(rilevazione.getOpening()));
+			}
 		routingContext.response().putHeader("content-type", "application/json")
 								.putHeader("Access-Control-Allow-Origin","*")
 								.putHeader("Access-Control-Allow-Methods", "POST,GET,PUT,DELETE")

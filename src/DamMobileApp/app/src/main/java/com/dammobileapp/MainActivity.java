@@ -55,16 +55,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-        btChannel.close();
+      //  btChannel.close();
     }
 
 
     private void initUI() {
-       try {
+       /*try {
             connectToBTServer();
         } catch (BluetoothDeviceNotFound bluetoothDeviceNotFound) {
             bluetoothDeviceNotFound.printStackTrace();
-        }
+        }*/
 
         tryHttpGet();
 
@@ -94,26 +94,16 @@ public class MainActivity extends AppCompatActivity {
         Button mode = (Button)findViewById(R.id.modeButton);
         mode.setOnClickListener(v -> {
            String modeText = (String) ((Button) findViewById(R.id.modeButton)).getText();
-           try {
-               tryHttpPost(modeText);
-               if(modeText =="MANUAL"){
-                   findViewById(R.id.radioGroup).setVisibility(View.VISIBLE);
-                   modeText = "AUTOMATIC";
-               }else if(modeText == "AUTOMATIC"){
-                   modeText = "MANUAL";
-               }
-                //mode.setText(modeText);
-
-
+            try {
+                tryHttpPost(modeText);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
         });
     }
 
     private void tryHttpGet(){
-        final String url = "http://042c464fe0ae.ngrok.io/api/data";
+        final String url = "http://60c4552e5136.ngrok.io/api/data";
         Http.get(url, response -> {
             if(response.code() == HttpURLConnection.HTTP_OK) {
                 try {
@@ -123,6 +113,8 @@ public class MainActivity extends AppCompatActivity {
                     //((TextView) findViewById(R.id.opening)).setText(content.getString("opening"));
 
                     if (content.has("state")) {
+                        ((TextView) findViewById(R.id.state)).setText(content.getString("state"));
+
                         if (content.getString("state").equals("ALARM")) {
                             findViewById(R.id.modeButton).setEnabled(true);
                         } else {
@@ -152,17 +144,26 @@ public class MainActivity extends AppCompatActivity {
 
     private void tryHttpPost(String mode) throws JSONException {
 
-        final String url = "http://042c464fe0ae.ngrok.io/api/data";
+        final String url = "http://60c4552e5136.ngrok.io/api/mode";
         final String content = new JSONObject()
                 .put("mode",mode).toString();
 
         Http.post(url, content.getBytes(), response -> {
             if(response.code() == HttpURLConnection.HTTP_OK){
-                try {
-                    ((TextView)findViewById(R.id.modeButton)).setText(response.contentAsString());
-                } catch (IOException e) {
-                    e.printStackTrace();
+
+                Button button = (Button)findViewById(R.id.modeButton);
+
+                if(mode.equals("manual")){
+                    findViewById(R.id.radioGroup).setVisibility(View.VISIBLE);
+                    String modeText = "automatic";
+                    button.setText(modeText);
+
+                }else if(mode.equals("automatic")){
+                    findViewById(R.id.radioGroup).setVisibility(View.GONE);
+                    String modeText = "manual";
+                    button.setText(modeText);
                 }
+
             }
         });
     }

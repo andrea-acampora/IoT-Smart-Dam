@@ -29,13 +29,13 @@ WaterLevel* waterLevel;
 
 char* ssidName = "TIM-CASA";
 char* pwd = "tim3d208f6e03";
-char* address = "http://8738a3a6495e.ngrok.io";
+char* address = "http://60c4552e5136.ngrok.io";
 
 
 void setup() { 
   Serial.begin(115200);
   setupWiFi(ssidName,pwd);
-  sched.init(50);
+  sched.init(100);
   createComponents();
   createTasks();
   initTasks();
@@ -63,10 +63,10 @@ void createTasks(){
 }
 
 void initTasks(){
-  blinkingTask -> init(100);
-  trackingTask -> init(100);
-  sendingTask -> init(100);
-  waterLevelControllerTask -> init(50);
+  blinkingTask -> init(500);
+  trackingTask -> init(200);
+  sendingTask -> init(FREQ_1);
+  waterLevelControllerTask -> init(100);
   waterLevelControllerTask -> setActive(true);
 }
 

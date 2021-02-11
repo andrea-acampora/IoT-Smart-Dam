@@ -1,7 +1,9 @@
 #include "WaterLevel.h"
 
 
-WaterLevel::WaterLevel(){}
+WaterLevel::WaterLevel(){
+  this-> stateChanged = false;
+}
 
 float WaterLevel::getWaterLevel(){
     return this->level; 
@@ -25,6 +27,9 @@ bool WaterLevel::isAlarm(){
 }
 
 void WaterLevel::setState(){
+    String oldState = this -> getState();
+    Serial.print("oldState: ");
+    Serial.println(oldState);
     if(this->level > PRE_ALARM_LEVEL){
         if(this->level > ALARM_LEVEL){
             this->state = ALARM; 
@@ -33,6 +38,13 @@ void WaterLevel::setState(){
         }
     }else{
         this->state = NORMAL;
+    }
+   Serial.print("currentState: ");
+  Serial.println(this->getState());
+    if(this -> getState() != oldState){
+      this -> stateChanged = true;
+    }else{
+      this -> stateChanged = false;
     }
 }
 
@@ -44,4 +56,8 @@ String WaterLevel::getState(){
   }else if(this->isAlarm()){
     return "ALARM";
   }
+}
+
+bool WaterLevel::isStateChanged(){
+  return this -> stateChanged;
 }

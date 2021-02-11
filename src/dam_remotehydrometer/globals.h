@@ -1,6 +1,9 @@
 #ifndef GLOBALS
 #define GLOBALS
 
+#define FREQ_1 10000
+#define FREQ_2 5000
+
 /**
  * Contains all the global Experiment informations.
  */

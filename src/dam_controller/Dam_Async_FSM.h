@@ -7,6 +7,7 @@
 #include "SerialConsole.h"
 #include "ConsoleBT.h"
 #include "Event.h"
+#include "timerZero.h"
 
 class Dam_Async_FSM : public AsyncFSM {
   
@@ -19,6 +20,7 @@ class Dam_Async_FSM : public AsyncFSM {
     ServoMotor* servo;
     SerialConsole* console;
     ConsoleBT* consoleBT;
+    bool receivingData;
     enum  { ON, OFF} currentState;
     void openDam(int dam_opening_level);
 };
