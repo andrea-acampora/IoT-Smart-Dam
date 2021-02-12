@@ -5,9 +5,9 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public enum State {
-	NORMAL("normal"), 
-	PRE_ALARM("pre_alarm"), 
-	ALARM("alarm"); 
+	NORMAL("NORMAL"), 
+	PRE_ALARM("PRE_ALARM"), 
+	ALARM("ALARM"); 
 
     private String name;
 

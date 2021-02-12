@@ -32,7 +32,8 @@ public class DamServiceController {
 		rilevazione.setModality(this.damSystem.getMode());
 
 		if (this.checkIfStateChanged()) {
-			if (damSystem.getState() == State.PRE_ALARM.getName()) {
+			if (damSystem.getState() == State.PRE_ALARM.getName() || damSystem.getState() == State.NORMAL.getName()) {
+				this.channel.sendMsg("P=0F");
 				this.channel.sendMsg("STOPF");
 			} else if (damSystem.getState() == State.ALARM.getName()) {
 				this.channel.sendMsg("STARTF");
@@ -40,7 +41,7 @@ public class DamServiceController {
 		}
 
 		if (this.checkIfDamIsOpen()) {
-			this.channel.sendMsg(String.valueOf(this.damSystem.getDamOpeningLevel()));
+			this.channel.sendMsg("P="+String.valueOf(this.damSystem.getDamOpeningLevel())+"F");
 		}
 
 		if (damSystem.getState() != State.NORMAL.getName()) {

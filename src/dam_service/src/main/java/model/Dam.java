@@ -18,10 +18,6 @@ public class Dam {
 	}
 
 	public void openDam(float level) {
-		/*
-		 * if(level < 460) { //non deve essere la diga a decidere lo stato
-		 * rilevazione.setState("PRE_ALARM"); this.setDamOpeningLevel(0);
-		 */
 		if (level >= 460 && level < 460 + DELTA_L) {
 			this.setDamOpeningLevel(20);
 		} else if (level >= 460 + DELTA_L && level < 460 + 2 * DELTA_L) {

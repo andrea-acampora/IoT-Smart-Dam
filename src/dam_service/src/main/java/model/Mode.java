@@ -5,8 +5,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public enum Mode {
-	AUTOMATIC("automatic"), 
-	MANUAL("manual");
+	AUTOMATIC("AUTOMATIC"), 
+	MANUAL("MANUAL");
 
 	private String name;
 
