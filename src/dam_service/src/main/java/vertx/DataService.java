@@ -30,10 +30,8 @@ public class DataService extends AbstractVerticle {
 
 	private int port;
 	private DamServiceController controller;
-	private LinkedList<DataPoint> values;
 
 	public DataService(final int port, final DamServiceController controller) {
-		values = new LinkedList<>();
 		this.port = port;
 		this.controller = controller;
 	}
@@ -58,7 +56,6 @@ public class DataService extends AbstractVerticle {
 		} else {
 			float value = res.getFloat("value");
 			String state = res.getString("state");
-			values.addFirst(new DataPoint(value, state));
 			this.controller.processData(new DataPoint(value, state));
 			response.setStatusCode(200).end();
 		}

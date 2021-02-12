@@ -24,7 +24,6 @@ public class DamServiceController {
 
 	public void processData(final DataPoint data) {
 		this.comunicateNewDetection(data); 
-		
 		Rilevazione rilevazione = new Rilevazione();
 		rilevazione.setWaterLevel(data.getWaterLevel());
 		rilevazione.setState(data.getState());
