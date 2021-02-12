@@ -45,7 +45,7 @@ void Dam_Async_FSM::handleEvent(Event* ev){
 void Dam_Async_FSM::openDam(int dam_opening_level){
       this -> servo -> on();
       for (int i = 0; i < dam_opening_level*1.8; i++) {
-          Serial.println("");
+            Serial.println("");
            this -> servo->setPosition(i);
       }
       this -> servo -> off();
