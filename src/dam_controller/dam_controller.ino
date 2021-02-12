@@ -13,11 +13,9 @@ ServoMotor* servo;
 
 Dam_Async_FSM* myAsincFSM;
 
-int count=0;
-int pos=0;
-int delta=1;
-
 void setup() {
+
+  pinMode(2,OUTPUT);
   Serial.begin(9600);
   servo = new ServoMotor(PIN_SERVO);
   led = new Led(PIN_LED_DAM);
@@ -29,14 +27,6 @@ void setup() {
 
 void loop() {
   myAsincFSM->checkEvents();
-//   servo ->on();
-//  for (int i = 0; i < 180; i++) {
-//    servo->setPosition(pos);         
-//    pos += delta;
-//  }
-//  servo ->off();
-//  pos -= delta;
-//  delta = -delta;
 }
 
 //ISR(TIMER0_COMPA_vect){

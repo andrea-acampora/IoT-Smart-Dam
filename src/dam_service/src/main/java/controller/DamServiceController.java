@@ -75,6 +75,7 @@ public class DamServiceController {
 
 	public void setMode(Mode mode) {
 		this.damSystem.setMode(mode);
+		this.channel.sendMsg("M="+mode.getName()+"F");
 		
 	}
 }

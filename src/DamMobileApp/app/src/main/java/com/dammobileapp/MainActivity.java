@@ -3,6 +3,7 @@ import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -55,16 +56,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-      //  btChannel.close();
+        btChannel.close();
     }
 
 
     private void initUI() {
-       /*try {
-            connectToBTServer();
-        } catch (BluetoothDeviceNotFound bluetoothDeviceNotFound) {
-            bluetoothDeviceNotFound.printStackTrace();
-        }*/
+        findViewById(R.id.buttonbt).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    connectToBTServer();
+                } catch (BluetoothDeviceNotFound bluetoothDeviceNotFound) {
+                    bluetoothDeviceNotFound.printStackTrace();
+                }
+            }
+        });
 
         tryHttpGet();
 
@@ -103,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void tryHttpGet(){
-        final String url = "http://60c4552e5136.ngrok.io/api/data";
+        final String url = "http://fde32baa7bb8.ngrok.io/api/data";
         Http.get(url, response -> {
             if(response.code() == HttpURLConnection.HTTP_OK) {
                 try {
@@ -144,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void tryHttpPost(String mode) throws JSONException {
 
-        final String url = "http://60c4552e5136.ngrok.io/api/mode";
+        final String url = "http://fde32baa7bb8.ngrok.io/api/mode";
         final String content = new JSONObject()
                 .put("mode",mode).toString();
 
@@ -178,10 +184,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onConnectionActive(final BluetoothChannel channel) {
 
-                /*((TextView) findViewById(R.id.statusLabel)).setText(String.format("Status : connected to server on device %s",
-                        serverDevice.getName()));
 
-                findViewById(R.id.connectBtn).setEnabled(false);*/
+                findViewById(R.id.buttonbt).setEnabled(false);
+                ((Button)findViewById(R.id.buttonbt)).setText("CONNECTED");
 
                 btChannel = channel;
                 btChannel.registerListener(new RealBluetoothChannel.Listener() {
@@ -203,8 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onConnectionCanceled() {
-                /*((TextView) findViewById(R.id.statusLabel)).setText(String.format("Status : unable to connect, device %s not found!",
-                        C.bluetooth.BT_DEVICE_ACTING_AS_SERVER_NAME));*/
+                ((Button)findViewById(R.id.buttonbt)).setText("TRY AGAIN");
             }
         }).execute();
     }

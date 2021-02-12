@@ -9,5 +9,5 @@ void TimerEventSource::notifyInterrupt(int pin){
            Event* timerEvent = new TimerEvent(TIMER_EVENT);
            this -> generateEvent(timerEvent);
       }
-
+    this -> interruptCount++;
 }

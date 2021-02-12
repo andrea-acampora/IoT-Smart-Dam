@@ -52,7 +52,6 @@ void InterruptDispatcher::bind(int pin, EventSource* src){
 
 void InterruptDispatcher::bindTimerInterrupt(EventSource* src){
     timer0.attachInterrupt(notifyTimerFunction);
-    timer0.start();
     timerEventSource = src;
 }
 void InterruptDispatcher::notifyInterrupt(int pin){
@@ -71,7 +70,8 @@ void EventSource::bindInterrupt(int pin){
 }
 
 void EventSource::bindTimerInterrupt(int period){
-     timer0.setPeriod(period);
+    timer0.init();
+    timer0.setPeriod(period);
     interruptDispatcher.bindTimerInterrupt(this);
 }
 

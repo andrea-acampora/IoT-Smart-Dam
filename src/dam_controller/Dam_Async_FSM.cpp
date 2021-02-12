@@ -11,18 +11,6 @@ Dam_Async_FSM :: Dam_Async_FSM(Light* led, ServoMotor* servo, SerialConsole* con
   this -> consoleBT -> registerObserver(this);
 }
 
-void startBlinking(){
-    int count = 0;
-    if(count%200==0){
-    if(digitalRead(4)==LOW){
-        digitalWrite(4,HIGH);
-    }else{
-     digitalWrite(4,LOW);
-  }
-}
-  count++;
-}
-
 void Dam_Async_FSM::handleEvent(Event* ev){
   switch(currentState){
     case OFF:
@@ -35,7 +23,7 @@ void Dam_Async_FSM::handleEvent(Event* ev){
           if(ev->getMessage() == "MANUAL"){
             this -> led -> switchOn();
             timer0.stop();
-          }else if(ev -> getMessage() == "AUTO"){
+          }else if(ev -> getMessage() == "AUTOMATIC"){
             this -> led -> switchOff();
             timer0.start();
           }
@@ -60,6 +48,5 @@ void Dam_Async_FSM::openDam(int dam_opening_level){
           Serial.println("");
            this -> servo->setPosition(i);
       }
-      //this -> servo -> setPosition(dam_opening_level*1.8);
       this -> servo -> off();
 }

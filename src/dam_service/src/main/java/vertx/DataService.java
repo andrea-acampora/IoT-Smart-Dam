@@ -64,7 +64,6 @@ public class DataService extends AbstractVerticle {
 	private void handleChangeMode(RoutingContext routingContext) {
 		HttpServerResponse response = routingContext.response();
 		JsonObject res = routingContext.getBodyAsJson();
-		System.out.println(res);
 		if (res == null) {
 			sendError(400, response);
 		} else {
