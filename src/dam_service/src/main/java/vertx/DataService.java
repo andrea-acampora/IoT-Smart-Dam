@@ -89,7 +89,7 @@ public class DataService extends AbstractVerticle {
 			data.put("value", rilevazione.getWaterLevel());
 			data.put("timeStamp", String.valueOf(rilevazione.getTimeStamp()));
 		}else  if(this.controller.getSystemState().equals("ALARM")) {
-			if(this.controller.getMode()==Mode.MANUAL) {
+			if(this.controller.getMode()==Mode.MANUAL.getName()) {
 				data.put("modality", "MANUAL");
 			}
 			data.put("value", rilevazione.getWaterLevel());

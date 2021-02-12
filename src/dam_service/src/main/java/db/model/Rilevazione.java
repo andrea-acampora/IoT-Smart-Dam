@@ -2,11 +2,15 @@ package db.model;
 
 import java.sql.Timestamp;
 
+
+import model.Mode;
+import model.State;
+
 public class Rilevazione {
 
     private int id;
-    private String state;
-    private String modality;
+    private State state;
+    private Mode modality;
     private Timestamp timeStamp;
     private int opening;
     
@@ -25,11 +29,11 @@ public class Rilevazione {
     }
 
     public void setState(String state) {
-        this.state = state;
+        this.state = State.get(state);
     }
 
     public void setModality(String modality) {
-        this.modality = modality;
+        this.modality = Mode.get(modality);
     }
 
     public void setTimeStamp(Timestamp timeStamp) {
@@ -44,11 +48,11 @@ public class Rilevazione {
     }
 
     public String getState() {
-        return state;
+        return state.getName();
     }
 
     public String getModality() {
-        return modality;
+        return modality.getName();
     }
 
     public Timestamp getTimeStamp() {

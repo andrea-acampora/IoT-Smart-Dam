@@ -1,16 +1,16 @@
 package model;
 
 public class DataPoint {
-	private float value;
+	private float waterLevel;
 	private String state;
 	
-	public DataPoint(float value, String state) {
-		this.value = value;
+	public DataPoint(float waterLevel, String state) {
+		this.waterLevel = waterLevel;
 		this.state = state;
 	}
 	
-	public float getValue() {
-		return value;
+	public float getWaterLevel() {
+		return waterLevel;
 	}
 	
 	public String getState() {
