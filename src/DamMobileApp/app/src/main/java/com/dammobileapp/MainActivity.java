@@ -138,8 +138,6 @@ public class MainActivity extends AppCompatActivity {
                         ((TextView) findViewById(R.id.opening)).setText(content.getString("opening"));
                     }
 
-
-
                     } catch(IOException | JSONException e){
                         e.printStackTrace();
                     }
@@ -189,21 +187,21 @@ public class MainActivity extends AppCompatActivity {
                 ((Button)findViewById(R.id.buttonbt)).setText("CONNECTED");
 
                 btChannel = channel;
-                btChannel.registerListener(new RealBluetoothChannel.Listener() {
+                /*btChannel.registerListener(new RealBluetoothChannel.Listener() {
                     @Override
                     public void onMessageReceived(String receivedMessage) {
-                        /*((TextView) findViewById(R.id.chatLabel)).append(String.format("> [RECEIVED from %s] %s\n",
+                        ((TextView) findViewById(R.id.chatLabel)).append(String.format("> [RECEIVED from %s] %s\n",
                                 btChannel.getRemoteDeviceName(),
-                                receivedMessage));*/
+                                receivedMessage));
                     }
 
                     @Override
                     public void onMessageSent(String sentMessage) {
-                        /*((TextView) findViewById(R.id.chatLabel)).append(String.format("> [SENT to %s] %s\n",
+                        ((TextView) findViewById(R.id.chatLabel)).append(String.format("> [SENT to %s] %s\n",
                                 btChannel.getRemoteDeviceName(),
-                                sentMessage));*/
+                                sentMessage));
                     }
-                });
+                });*/
             }
 
             @Override
