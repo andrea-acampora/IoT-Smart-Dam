@@ -28,8 +28,6 @@ public class DamServiceController {
 		rilevazione.setWaterLevel(data.getWaterLevel());
 		rilevazione.setState(data.getState());
 		rilevazione.setTimeStamp(new Timestamp(System.currentTimeMillis()));
-		rilevazione.setOpening(this.damSystem.getDamOpeningLevel());
-		rilevazione.setModality(this.damSystem.getMode());
 
 		if (this.checkIfStateChanged()) {
 			if (damSystem.getState() == State.PRE_ALARM.getName() || damSystem.getState() == State.NORMAL.getName()) {
@@ -40,7 +38,7 @@ public class DamServiceController {
 			}
 		}
 
-		if (this.checkIfDamIsOpen()) {
+		if (this.checkIfDamIsOpen() && this.damSystem.getMode()==Mode.AUTOMATIC.getName()) {
 			this.channel.sendMsg("P="+String.valueOf(this.damSystem.getDamOpeningLevel())+"F");
 		}
 
@@ -76,6 +74,13 @@ public class DamServiceController {
 	public void setMode(Mode mode) {
 		this.damSystem.setMode(mode);
 		this.channel.sendMsg("M="+mode.getName()+"F");
-		
+	}
+	
+	public void setDamOpeningLevel(String value) {
+		this.damSystem.setDamOpeningLevel(Integer.valueOf(value));
+	}
+	
+	public int getDamOpeningLevel() {
+		return this.damSystem.getDamOpeningLevel();
 	}
 }

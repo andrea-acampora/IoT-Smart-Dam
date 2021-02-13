@@ -47,7 +47,7 @@ public class DamSystem {
 		}
 	}
 
-	public void openDam(int damOpeningLevel) {
+	public void setDamOpeningLevel(int damOpeningLevel) {
 		if (this.mode == Mode.MANUAL) {
 			this.dam.setDamOpeningLevel(damOpeningLevel);
 		}

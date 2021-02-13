@@ -20,6 +20,7 @@ class Dam_Async_FSM : public AsyncFSM {
     ServoMotor* servo;
     SerialConsole* console;
     ConsoleBT* consoleBT;
+    int currentDamLevel;
     bool receivingData;
     enum  { ON, OFF} currentState;
     void openDam(int dam_opening_level);

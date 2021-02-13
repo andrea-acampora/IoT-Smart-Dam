@@ -7,6 +7,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Locale;
 import java.util.concurrent.ThreadPoolExecutor;
 
 public class Http {
@@ -15,37 +16,45 @@ public class Http {
         void onHttpResponseAvailable(final HttpResponse response) throws IOException, JSONException;
     }
 
-    public static void get(final String url, final Listener listener){
-        new AsyncTask<Void, Void, HttpResponse>() {
+    public static void get(final String url, final Listener listener) {
+        new AsyncTask<Void, HttpResponse, Void>() {
             @Override
-            protected HttpResponse doInBackground(Void... voids) {
-                //while (true){
-                final HttpURLConnection connection;
-                try {
-                    connection = (HttpURLConnection) new URL(url).openConnection();
-                    connection.setRequestMethod("GET");
+            protected Void doInBackground(Void... voids) {
+                while (true) {
+                    final HttpURLConnection connection;
+                    try {
+                        connection = (HttpURLConnection) new URL(url).openConnection();
+                        connection.setRequestMethod("GET");
+                        publishProgress(new HttpResponse(connection.getResponseCode(), connection.getInputStream()));
 
-                    return new HttpResponse(connection.getResponseCode(), connection.getInputStream());
-
-                } catch (IOException e) {
-                    return null;
+                    } catch (IOException e) {
+                    }
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
-                //}
             }
 
-            @Override
-            protected void onPostExecute(HttpResponse response) {
+            protected void onProgressUpdate(HttpResponse... response) {
                 try {
-                    listener.onHttpResponseAvailable(response);
+                    listener.onHttpResponseAvailable(response[0]);
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            protected void onPostExecute(Void notused) {
+                super.onPostExecute(notused);
+            }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-       //}.execute();
+        //}.execute();
     }
+
 
     public static void post(final String url, final byte[] payload, final Listener listener){
         new AsyncTask<Void, Void, HttpResponse>(){

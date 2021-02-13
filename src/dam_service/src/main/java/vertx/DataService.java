@@ -42,6 +42,7 @@ public class DataService extends AbstractVerticle {
 		router.route().handler(BodyHandler.create());
 		router.post("/api/data").handler(this::handleAddNewData);
 		router.post("/api/mode").handler(this::handleChangeMode);
+		router.post("/api/openingDam").handler(this::handleDamOpening);
 		router.get("/api/data").handler(this::handleGetData);
 		vertx.createHttpServer().requestHandler(router).listen(port);
 
@@ -76,6 +77,17 @@ public class DataService extends AbstractVerticle {
 		}
 	}
 	
+	private void handleDamOpening(RoutingContext routingContext) {
+		HttpServerResponse response = routingContext.response();
+		JsonObject res = routingContext.getBodyAsJson();
+		if (res == null) {
+			sendError(400, response);
+		} else {
+				this.controller.setDamOpeningLevel(res.getString("opening"));
+			}
+			response.setStatusCode(200).end();
+		}
+	
 	private void handleGetData(RoutingContext routingContext) {
 		Rilevazione rilevazione = this.controller.getLastData();
 		JsonObject data = new JsonObject();
@@ -90,7 +102,7 @@ public class DataService extends AbstractVerticle {
 			}
 			data.put("value", rilevazione.getWaterLevel());
 			data.put("timeStamp", String.valueOf(rilevazione.getTimeStamp()));
-			data.put("opening", String.valueOf(rilevazione.getOpening()));
+			data.put("opening", String.valueOf(this.controller.getDamOpeningLevel()));
 			}
 		routingContext.response().putHeader("content-type", "application/json")
 								.putHeader("Access-Control-Allow-Origin","*")

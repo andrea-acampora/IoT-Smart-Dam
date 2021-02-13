@@ -5,7 +5,7 @@ $(document).ready(function () {
 	let y = 0;
 	const levels_length = 6
 	let requestLoop = setInterval(function () {
-		$.getJSON('http://60c4552e5136.ngrok.io/api/data', function (data) {
+		$.getJSON('http://84bf59800865.ngrok.io/api/data', function (data) {
 			console.log(data);
 			let state = data.state;
 			let timestamp;
@@ -51,7 +51,7 @@ $(document).ready(function () {
 				$(".opening").text(opening);
 			}
 		});
-	}, 5000);
+	}, 6000);
 
 
 });

@@ -10,9 +10,8 @@ public class Rilevazione {
 
     private int id;
     private State state;
-    private Mode modality;
     private Timestamp timeStamp;
-    private int opening;
+
     
     private float waterLevel; 
 
@@ -32,17 +31,11 @@ public class Rilevazione {
         this.state = State.get(state);
     }
 
-    public void setModality(String modality) {
-        this.modality = Mode.get(modality);
-    }
 
     public void setTimeStamp(Timestamp timeStamp) {
         this.timeStamp = timeStamp;
     }
 
-    public void setOpening(int value) {
-    	this.opening = value;
-    }
     public int getId() {
         return id;
     }
@@ -51,16 +44,9 @@ public class Rilevazione {
         return state.getName();
     }
 
-    public String getModality() {
-        return modality.getName();
-    }
-
     public Timestamp getTimeStamp() {
         return timeStamp;
     }
-    
-    public int getOpening() {
-    	return this.opening;
-    }
+
 
 }
