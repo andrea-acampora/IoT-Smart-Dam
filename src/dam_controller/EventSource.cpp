@@ -51,8 +51,8 @@ void InterruptDispatcher::bind(int pin, EventSource* src){
 }
 
 void InterruptDispatcher::bindTimerInterrupt(EventSource* src){
-    timer0.attachInterrupt(notifyTimerFunction);
     timerEventSource = src;
+    timer0.attachInterrupt(notifyTimerFunction);
 }
 void InterruptDispatcher::notifyInterrupt(int pin){
   Serial.print("");  /* bug/race fix */
@@ -61,9 +61,8 @@ void InterruptDispatcher::notifyInterrupt(int pin){
 
 void InterruptDispatcher::notifyTimerInterrupt(){
   Serial.print("");  /* bug/race fix */
-  timerEventSource  -> notifyInterrupt();
+  timerEventSource->notifyInterrupt();
 }
-
 
 void EventSource::bindInterrupt(int pin){
   interruptDispatcher.bind(pin, this);

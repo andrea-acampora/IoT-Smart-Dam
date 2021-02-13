@@ -20,7 +20,7 @@ timerZero::timerZero(void) {
 }
 
 void timerZero::init(void) {
-    TCCR0B = 0; // Setting the timer mode, CTC, and disabling the timer clock source (stopping it)
+    TCCR0B = _BV(WGM12); // Setting the timer mode, CTC, and disabling the timer clock source (stopping it)
     TCCR0A = 0; // No flag in this register is needed
     TIMSK0 = 0; // Disabling interrupts capture
     cli(); // Disabling interrupts, because TCNT1 setting is not an atomic operation
@@ -44,7 +44,7 @@ void timerZero::setPeriod(unsigned long int period) {
              */
             this->_clockSelectBits = csBitsValues[i]; 
             cli(); // Disabling interrupts, because OCR1A setting is not an atomic operation
-            OCR0A = 255;//cycles / prescalerValues[i]; // Setting the value with which the counter (TCNT1) will be compared
+            OCR0A = cycles / prescalerValues[i];//cycles / prescalerValues[i]; // Setting the value with which the counter (TCNT1) will be compared
             sei(); // Re-enabling interrupts
             timerSet = true;
         }
@@ -72,12 +72,12 @@ void timerZero::detachInterrupt(void) {
 }
 
 void timerZero::start(void) {
-    TCCR0A |= this->_clockSelectBits; // Setting the clock source, and consequently starting the timer
+    TCCR0B |= this->_clockSelectBits; // Setting the clock source, and consequently starting the timer
 }
 
 void timerZero::stop(void) {
     cli(); 
-    TCCR0A = 0;  // Disabling the timer clock source (stopping it), and setting the timer mode (CTC)
+    TCCR0B = _BV(WGM12);  // Disabling the timer clock source (stopping it), and setting the timer mode (CTC)
     sei(); 
 }
 

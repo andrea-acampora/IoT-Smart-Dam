@@ -5,7 +5,7 @@
 #include "Event.h"
 #include "TimerEvent.h"
 
-#define N_INTERRUPT_BEFORE_EVENT 200
+#define N_INTERRUPT_BEFORE_EVENT 10
 
 
 class TimerEventSource : public EventSource{
@@ -13,7 +13,7 @@ class TimerEventSource : public EventSource{
         int interruptCount;
     public:
         TimerEventSource();
-        virtual void notifyInterrupt(int pin);
+        virtual void notifyInterrupt();
 }; 
 
 #endif

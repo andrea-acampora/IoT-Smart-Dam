@@ -8,11 +8,12 @@
 #include "ConsoleBT.h"
 #include "Event.h"
 #include "timerZero.h"
+#include "TimerEventSource.h"
 
 class Dam_Async_FSM : public AsyncFSM {
   
   public:
-    Dam_Async_FSM(Light* led, ServoMotor* servo, SerialConsole* console, ConsoleBT* consoleBT);
+    Dam_Async_FSM(Light* led, ServoMotor* servo, SerialConsole* console, ConsoleBT* consoleBT,TimerEventSource* timerEventSource);
     void handleEvent(Event* ev);
      
   private:
@@ -20,6 +21,7 @@ class Dam_Async_FSM : public AsyncFSM {
     ServoMotor* servo;
     SerialConsole* console;
     ConsoleBT* consoleBT;
+    TimerEventSource* timerEventSource;
     int currentDamLevel;
     bool receivingData;
     enum  { ON, OFF} currentState;

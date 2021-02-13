@@ -1,14 +1,17 @@
 #include "Dam_Async_FSM.h"
 
 
-Dam_Async_FSM :: Dam_Async_FSM(Light* led, ServoMotor* servo, SerialConsole* console, ConsoleBT* consoleBT){
+Dam_Async_FSM :: Dam_Async_FSM(Light* led, ServoMotor* servo, SerialConsole* console, ConsoleBT* consoleBT,TimerEventSource* timerEventSource){
   currentState = ON;
   this -> led = led;
   this -> servo = servo;
   this -> console = console;
   this -> consoleBT = consoleBT;
+  this -> timerEventSource = timerEventSource;
   this -> console -> registerObserver(this);
   this -> consoleBT -> registerObserver(this);
+  this -> timerEventSource -> registerObserver(this);
+  
   this -> currentDamLevel = 0;
 }
 
@@ -36,6 +39,7 @@ void Dam_Async_FSM::handleEvent(Event* ev){
             timer0.start();
           }else if(ev -> getMessage() == "STOP"){
             this -> receivingData = false;
+            this -> led -> switchOff();
             timer0.stop();
           }
         }
