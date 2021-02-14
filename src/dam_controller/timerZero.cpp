@@ -23,7 +23,7 @@ void timerZero::init(void) {
     TCCR0B = _BV(WGM12); // Setting the timer mode, CTC, and disabling the timer clock source (stopping it)
     TCCR0A = 0; // No flag in this register is needed
     TIMSK0 = 0; // Disabling interrupts capture
-    cli(); // Disabling interrupts, because TCNT1 setting is not an atomic operation
+    cli(); // Disabling interrupts, because TCNT0 setting is not an atomic operation
     TCNT0 = 0; // Resetting the timer count
     sei(); // Re-enabling interrupts
 }
@@ -82,7 +82,7 @@ void timerZero::stop(void) {
 }
 
 void timerZero::reset(void) {
-    cli(); // Disabling interrupts, because TCNT1 setting is not an atomic operation
+    cli(); // Disabling interrupts, because TCNT0 setting is not an atomic operation
     TCNT0 = 0; // Resetting the timer counter, to start a new period
     sei(); // Re-enabling interrupts
 }

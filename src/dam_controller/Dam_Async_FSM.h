@@ -3,7 +3,7 @@
 
 #include "async_fsm.h"
 #include "Light.h"
-#include "ServoMotor.h"
+#include "Dam.h"
 #include "SerialConsole.h"
 #include "ConsoleBT.h"
 #include "Event.h"
@@ -13,16 +13,15 @@
 class Dam_Async_FSM : public AsyncFSM {
   
   public:
-    Dam_Async_FSM(Light* led, ServoMotor* servo, SerialConsole* console, ConsoleBT* consoleBT,TimerEventSource* timerEventSource);
+    Dam_Async_FSM(Light* led, Dam* dam, SerialConsole* console, ConsoleBT* consoleBT,TimerEventSource* timerEventSource);
     void handleEvent(Event* ev);
      
   private:
     Light* led;
-    ServoMotor* servo;
+    Dam* dam;
     SerialConsole* console;
     ConsoleBT* consoleBT;
     TimerEventSource* timerEventSource;
-    int currentDamLevel;
     bool receivingData;
     enum  { ON, OFF} currentState;
     void openDam(int dam_opening_level);

@@ -3,18 +3,8 @@
 
 #include "Arduino.h"
 
-/*
- * This class represents an interface from which to manage the Timer 1 of an ATmega328P processor on a Arduino Uno. It
- * can be use to manage it as a timer in the strict sense of the word, with functionalities for only starting, stopping
- * and resetting it. Moreover, it can perform an action when the specified period of time has elapsed. It can count
- * up to four seconds, more or less, because of the size of the ATmega328P's registers. Every value greater than
- * that will be subsituted by the maximum value allowed into the counter register (2^16 - 1).
- */
 class timerZero {
     public:
-        /*
-         * Returns a pointer to the only instance of this class.
-         */
         static timerZero *getInstance();
         /* 
          * Initializes the timer so as to use the CTC (Clear Timer on Compare match) timer mode, stop the timer from
@@ -22,10 +12,7 @@ class timerZero {
          * It must be called one time before using the timer, otherwise it can bring to unpredictable results.
          */
         void init(void);
-        /*
-         * Sets the period (in microseconds) of the timer after which the counter is put to zero and an interrupt is generated.
-         * Not calling this function before starting the timer can bring to unpredictable results.
-         */
+
         void setPeriod(unsigned long int period);
         /* 
          * Sets the function called when the interrupt is fired and enables the firing of interrupts for the timer.

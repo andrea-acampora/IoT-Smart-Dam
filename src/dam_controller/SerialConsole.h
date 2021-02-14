@@ -4,8 +4,7 @@
 #include "EventSource.h"
 #include "Event.h"
 #include "MsgReceivedEvent.h"
-
-#define SERIAL_RX_PIN 0
+#include "globals.h"
 
 class SerialConsole : public EventSource{
 

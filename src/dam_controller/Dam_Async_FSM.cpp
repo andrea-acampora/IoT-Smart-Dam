@@ -1,18 +1,16 @@
 #include "Dam_Async_FSM.h"
 
 
-Dam_Async_FSM :: Dam_Async_FSM(Light* led, ServoMotor* servo, SerialConsole* console, ConsoleBT* consoleBT,TimerEventSource* timerEventSource){
-  currentState = ON;
+Dam_Async_FSM :: Dam_Async_FSM(Light* led, Dam* dam, SerialConsole* console, ConsoleBT* consoleBT,TimerEventSource* timerEventSource){
   this -> led = led;
-  this -> servo = servo;
+  this -> dam = dam;
   this -> console = console;
   this -> consoleBT = consoleBT;
   this -> timerEventSource = timerEventSource;
   this -> console -> registerObserver(this);
   this -> consoleBT -> registerObserver(this);
   this -> timerEventSource -> registerObserver(this);
-  
-  this -> currentDamLevel = 0;
+  currentState = ON;
 }
 
 void Dam_Async_FSM::handleEvent(Event* ev){
@@ -21,8 +19,7 @@ void Dam_Async_FSM::handleEvent(Event* ev){
         break;
     case ON:
         if(ev -> getType() == MSG_DAM_OPENING){
-          int newDamLevel = ev -> getMessage().toInt();
-          this -> openDam(newDamLevel);
+          this -> openDam(ev -> getMessage().toInt());
         }else if(ev -> getType() == MSG_MODE_CHANGED){
           if(ev->getMessage() == "MANUAL"){
             this -> led -> switchOn();
@@ -48,18 +45,5 @@ void Dam_Async_FSM::handleEvent(Event* ev){
 }
 
 void Dam_Async_FSM::openDam(int newDamLevel){
-      this -> servo -> on();
-      if(newDamLevel > this->currentDamLevel){
-         for (int i = currentDamLevel*1.8; i < newDamLevel*1.8; i++) {
-          Serial.println("");
-          this -> servo->setPosition(i);
-         }
-      }else if(newDamLevel < this->currentDamLevel){
-         for (int i = currentDamLevel*1.8; i > newDamLevel*1.8; i--) {
-          Serial.println("");
-          this -> servo->setPosition(i);
-         }
-      }
-      this->currentDamLevel = newDamLevel;
-      this -> servo -> off();
+      this -> dam -> openDam(newDamLevel);
 }
