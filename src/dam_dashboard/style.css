@@ -1,8 +1,40 @@
-.state, .mode, .opening{
-    text-align:center;
-    font-size: 60px;
+#title-row{
+   font-weight: bold;
+   font-size: 45px;
+   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+   background-color: #ffd369;
 }
 
-.current-level{
-    font-size: 30px; 
+.state-title,.level-title,.opening-title,.mode-title,.prev-title{
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.state,.current-level,.opening,.mode{
+    font-size: 38px;
+    text-align: left;
+}
+
+.state{
+    font-weight: bold;
+}
+
+.prev-levels{
+    font-size: 35px;
+    padding-top: 30px;
+}
+
+.prev-title{
+    padding-top: 30px;
+}
+
+div#dam-info{
+    border-right: 2px solid black;
+    padding-bottom: 340px;
+}
+
+hr{
+    border: 1px solid black;
+    padding:0;
+    margin: 0;
 }

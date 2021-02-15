@@ -2,25 +2,72 @@
 <html lang="it">
 
 <head>
-   <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <title>JavaScript - read JSON from URL</title>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="data.js"></script>
-       
-    <link rel="stylesheet" href="style.css"/>
-    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css" />
+
 </head>
 
 <body>
-    <p class="state">
-    </p>
-    <p class="mode"></p>
-    <div class="prev-levels">
-        
-    </div>
-    <p class="current-level"></p>
-    <p class="opening"></p>
+    <div class="container-fluid">
+        <div class="row" id="title-row">
+            <div class="col-12">
+                <p class="text-center mt-4 mb-4">SMART DAM</p>
+            </div>
+        </div>
 
+        <hr>
+        <div class="row">
+            <div class="col-6" id="dam-info">
+                <div class="row py-5 text-center">
+                    <div class="col-6">
+                        <p class="state-title">System state: </p>
+                    </div>
+                    <div class="col-6">
+                        <p class="state"></p>
+                    </div>
+                </div>
+
+                <div class="row py-5  text-center">
+                    <div class="col-6">
+                        <p class="level-title">Current Water level: </p>
+                    </div>
+                    <div class="col-6">
+                        <p class="current-level"></p>
+                    </div>
+                </div>
+
+                <div class="row py-5 text-center">
+                    <div class="col-6">
+                        <p class="opening-title">Dam Opening level: </p>
+                    </div>
+                    <div class="col-6">
+                        <p class="opening"></p>
+                    </div>
+                </div>
+
+
+                <div class="row py-5  text-center">
+                    <div class="col-6">
+                        <p class="mode-title">Modality: </p>
+                    </div>
+                    <div class="col-6">
+                        <p class="mode"></p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-6 pt-4 text-center">
+                <p class="prev-title">Recent Values: </p>
+                <div class="prev-levels"></div>
+            </div>
+        </div>
+    </div>
 </body>
 
 </html>

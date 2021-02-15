@@ -55,7 +55,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-
+        try {
+            sendModalityToServer("AUTOMATIC");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         btChannel.close();
     }
 
@@ -81,27 +85,39 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 String toSend = "20";
+                String toSendBt="";
                 switch (checkedId){
                     case R.id.button20:
-                        toSend = "P=20F";
+                        toSendBt = "P=20F";
+                        toSend="20";
                     case R.id.button40:
-                        toSend = "P=40F";
+                        toSendBt = "P=40F";
+                        toSend="40";
                     case R.id.button60:
-                        toSend = "P=60F";
+                        toSendBt = "P=60F";
+                        toSend="60";
                     case R.id.button80:
-                        toSend = "P=80F";
+                        toSendBt = "P=80F";
+                        toSend="80";
                     case R.id.button100:
-                        toSend = "P=100F";
+                        toSendBt = "P=100F";
+                        toSend="100";
                 }
-                btChannel.sendMessage(toSend);
+                btChannel.sendMessage(toSendBt);
+                try {
+                    sendOpeningLevelToServer(toSend);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
+
 
         Button mode = (Button)findViewById(R.id.modeButton);
         mode.setOnClickListener(v -> {
            String modeText = (String) ((Button) findViewById(R.id.modeButton)).getText();
             try {
-                tryHttpPost(modeText);
+                sendModalityToServer(modeText);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -109,14 +125,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void tryHttpGet(){
-        final String url = "http://fde32baa7bb8.ngrok.io/api/data";
+        final String url = "http://84bf59800865.ngrok.io/api/data";
         Http.get(url, response -> {
-            if(response.code() == HttpURLConnection.HTTP_OK) {
+           if(response.code() == HttpURLConnection.HTTP_OK) {
                 try {
                     JSONObject content = response.contentAsJson();
-                    //((TextView) findViewById(R.id.level)).setText(content.getString("value"));
-                    //((TextView) findViewById(R.id.state)).setText(content.getString("state"));
-                    //((TextView) findViewById(R.id.opening)).setText(content.getString("opening"));
 
                     if (content.has("state")) {
                         ((TextView) findViewById(R.id.state)).setText(content.getString("state"));
@@ -146,9 +159,9 @@ public class MainActivity extends AppCompatActivity {
 
 }
 
-    private void tryHttpPost(String mode) throws JSONException {
+    private void sendModalityToServer(String mode) throws JSONException {
 
-        final String url = "http://fde32baa7bb8.ngrok.io/api/mode";
+        final String url = "http://84bf59800865.ngrok.io/api/mode";
         final String content = new JSONObject()
                 .put("mode",mode).toString();
 
@@ -172,6 +185,15 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void sendOpeningLevelToServer(String value) throws JSONException {
+
+        final String url = "http://84bf59800865.ngrok.io/api/openingDam";
+        final String content = new JSONObject()
+                .put("opening",value).toString();
+
+        Http.post(url, content.getBytes(), response -> {});
+    }
+
     private void connectToBTServer() throws BluetoothDeviceNotFound {
         final BluetoothDevice serverDevice = BluetoothUtils.getPairedDeviceByName(C.bluetooth.BT_DEVICE_ACTING_AS_SERVER_NAME);
 
@@ -187,21 +209,6 @@ public class MainActivity extends AppCompatActivity {
                 ((Button)findViewById(R.id.buttonbt)).setText("CONNECTED");
 
                 btChannel = channel;
-                /*btChannel.registerListener(new RealBluetoothChannel.Listener() {
-                    @Override
-                    public void onMessageReceived(String receivedMessage) {
-                        ((TextView) findViewById(R.id.chatLabel)).append(String.format("> [RECEIVED from %s] %s\n",
-                                btChannel.getRemoteDeviceName(),
-                                receivedMessage));
-                    }
-
-                    @Override
-                    public void onMessageSent(String sentMessage) {
-                        ((TextView) findViewById(R.id.chatLabel)).append(String.format("> [SENT to %s] %s\n",
-                                btChannel.getRemoteDeviceName(),
-                                sentMessage));
-                    }
-                });*/
             }
 
             @Override

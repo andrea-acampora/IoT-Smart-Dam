@@ -4,12 +4,8 @@
 #include "Event.h"
 #include "MsgReceivedEvent.h"
 #include "EventSource.h"
+#include "globals.h"
 #include <AltSoftSerial.h>
-
-
-#define RX_PIN 8
-#define TX_PIN 9
-
 
 class ConsoleBT : public EventSource{
 

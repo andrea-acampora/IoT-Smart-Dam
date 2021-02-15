@@ -3,7 +3,7 @@
 ConsoleBT::ConsoleBT(){
   content.reserve(256);
   channel.begin(9600);
-  bindInterrupt(RX_PIN);
+  bindInterrupt(BT_RX_PIN);
 }
 
 void ConsoleBT::notifyInterrupt(){

@@ -6,13 +6,11 @@ DROP DATABASE IF EXISTS `SmartDam`;
 CREATE SCHEMA IF NOT EXISTS `SmartDam` DEFAULT CHARACTER SET utf8 ;
 USE `SmartDam` ;
 
-CREATE TABLE IF NOT EXISTS  `rilevazioni` (
+CREATE TABLE IF NOT EXISTS  `rilevazione` (
     `id` INT NOT NULL AUTO_INCREMENT,
     `timeStamp` TIMESTAMP(6) DEFAULT CURRENT_TIMESTAMP,
     `waterLevel` FLOAT(10) NOT NULL,
     `state` VARCHAR(10) NOT NULL,
-    `modality` VARCHAR(10) NOT NULL,
-    `opening` INT(3) NOT NULL,
     PRIMARY KEY (`id`)
 );
 
