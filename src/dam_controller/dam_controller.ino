@@ -18,6 +18,7 @@ Dam_Async_FSM* dam_AsincFSM;
 
 void setup() {
   Serial.begin(9600);
+  pinMode(2,OUTPUT);
   dam = new Dam();
   led = new Led(PIN_LED_DAM);
   console = new SerialConsole();

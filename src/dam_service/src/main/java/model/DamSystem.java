@@ -44,6 +44,7 @@ public class DamSystem {
 			this.dam.openDam(detection.getWaterLevel());
 		}else if(this.state == State.NORMAL || this.state == State.PRE_ALARM) {
 			this.dam.closeDam();
+			this.setMode(Mode.AUTOMATIC.getName());
 		}
 	}
 

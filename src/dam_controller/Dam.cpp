@@ -6,6 +6,7 @@ Dam::Dam(){
 }
 
 void Dam::openDam(int newDamLevel){
+    digitalWrite(2,HIGH);
     this -> servo -> on();
     if(newDamLevel > this->damOpeningLevel){
          for (int i = this->damOpeningLevel*1.8; i < newDamLevel*1.8; i++) {
@@ -20,6 +21,7 @@ void Dam::openDam(int newDamLevel){
       }
       this->damOpeningLevel = newDamLevel;
       this -> servo -> off();
+      digitalWrite(2,LOW);
 }
 
 int Dam::getDamOpeningLevel(){

@@ -6,7 +6,7 @@ $(document).ready(function () {
 	const levels_length = 6;
 	$(".level-title,.opening-title,.mode-title,.prev-title").hide();
 	let requestLoop = setInterval(function () {
-		$.getJSON('http://1e8934e31b25.ngrok.io/api/data', function (data) {
+		$.getJSON('http://f6ab7aa9c1c8.ngrok.io/api/data', function (data) {
 			console.log(data);
 			let state = data.state;
 			let timestamp;
@@ -45,10 +45,10 @@ $(document).ready(function () {
 				
 				$(".prev-title").show();
 				$(".prev-levels").append(result);
-				let current = `<div>` + levels[levels.length - 1][0] + `</div>`;
+				let current = `<div>` + levels[levels.length - 1][0];
 	
 				$(".level-title").show();
-				$(".current-level").append(current);
+				$(".current-level").append(current +" cm </div>");
 			}else{
 				levels = []; 
 			}

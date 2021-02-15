@@ -80,36 +80,36 @@ public class MainActivity extends AppCompatActivity {
         tryHttpGet();
 
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-        {
-            @SuppressLint("NonConstantResourceId")
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                String toSend = "20";
-                String toSendBt="";
-                switch (checkedId){
-                    case R.id.button20:
-                        toSendBt = "P=20F";
-                        toSend="20";
-                    case R.id.button40:
-                        toSendBt = "P=40F";
-                        toSend="40";
-                    case R.id.button60:
-                        toSendBt = "P=60F";
-                        toSend="60";
-                    case R.id.button80:
-                        toSendBt = "P=80F";
-                        toSend="80";
-                    case R.id.button100:
-                        toSendBt = "P=100F";
-                        toSend="100";
-                }
-                btChannel.sendMessage(toSendBt);
-                try {
-                    sendOpeningLevelToServer(toSend);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            String toSend = "20";
+            String toSendBt="";
+            switch (checkedId){
+                case R.id.button20:
+                    toSendBt = "P=20F";
+                    toSend="20";
+                    break;
+                case R.id.button40:
+                    toSendBt = "P=40F";
+                    toSend="40";
+                    break;
+                case R.id.button60:
+                    toSendBt = "P=60F";
+                    toSend="60";
+                    break;
+                case R.id.button80:
+                    toSendBt = "P=80F";
+                    toSend="80";
+                    break;
+                case R.id.button100:
+                    toSendBt = "P=100F";
+                    toSend="100";
+                    break;
+            }
+            btChannel.sendMessage(toSendBt);
+            try {
+                sendOpeningLevelToServer(toSend);
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         });
 
@@ -126,67 +126,74 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void tryHttpGet(){
-        final String url = "http://84bf59800865.ngrok.io/api/data";
+        final String url = "http://f6ab7aa9c1c8.ngrok.io/api/data";
         Http.get(url, response -> {
-           new Runnable() {
-               @Override
-               public void run() {
-                   if (response.code() == HttpURLConnection.HTTP_OK) {
-                       try {
-                           JSONObject content = response.contentAsJson();
 
-                           if (content.has("state")) {
-                               MainActivity.this.runOnUiThread(() -> {
-                                   try {
-                                       ((TextView) findViewById(R.id.state)).setText(content.getString("state"));
-                                   } catch (JSONException e) {
-                                       e.printStackTrace();
-                                   }
-                               });
+            Thread thread = new Thread(new Runnable() {
 
-                               if (content.getString("state").equals("ALARM")) {
-                                   MainActivity.this.runOnUiThread(() -> findViewById(R.id.modeButton).setEnabled(true));
-                               } else {
-                                   MainActivity.this.runOnUiThread(() -> findViewById(R.id.modeButton).setEnabled(false));
-                                   MainActivity.this.runOnUiThread(() -> findViewById(R.id.radioGroup).setVisibility(View.GONE));
-                               }
-                           }
+                @Override
+                public void run() {
+                    try  {
+            if (response.code() == HttpURLConnection.HTTP_OK) {
+                try {
+                    JSONObject content = response.contentAsJson();
 
-                           if (content.has("value")) {
-                               MainActivity.this.runOnUiThread(() -> {
-                                   try {
-                                       ((TextView) findViewById(R.id.level)).setText(content.getString("value"));
-                                   } catch (JSONException e) {
-                                       e.printStackTrace();
-                                   }
-                               });
-                           }
+                    if (content.has("state")) {
+                        MainActivity.this.runOnUiThread(() -> {
+                            try {
+                                ((TextView) findViewById(R.id.state)).setText(content.getString("state"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        });
+
+                        if (content.getString("state").equals("ALARM")) {
+                            MainActivity.this.runOnUiThread(() -> findViewById(R.id.modeButton).setEnabled(true));
+                        } else {
+                            MainActivity.this.runOnUiThread(() -> findViewById(R.id.modeButton).setEnabled(false));
+                            MainActivity.this.runOnUiThread(() -> findViewById(R.id.radioGroup).setVisibility(View.GONE));
+                        }
+                    }
+
+                    if (content.has("value")) {
+                        MainActivity.this.runOnUiThread(() -> {
+                            try {
+                                ((TextView) findViewById(R.id.level)).setText(content.getString("value"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
 
 
-                           if (content.has("opening")) {
-                               MainActivity.this.runOnUiThread(() -> {
-                                   try {
-                                       ((TextView) findViewById(R.id.opening)).setText(content.getString("opening"));
-                                   } catch (JSONException e) {
-                                           e.printStackTrace();
-                                   }
-                               });
-                           }
+                    if (content.has("opening")) {
+                        MainActivity.this.runOnUiThread(() -> {
+                            try {
+                                ((TextView) findViewById(R.id.opening)).setText(content.getString("opening"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    }
 
-                       } catch (IOException | JSONException e) {
-                           e.printStackTrace();
-                       }
-                   }
-               }
-           };
+                } catch (IOException | JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
 
+            thread.start();
         });
 
 }
 
     private void sendModalityToServer(String mode) throws JSONException {
 
-        final String url = "http://84bf59800865.ngrok.io/api/mode";
+        final String url = "http://f6ab7aa9c1c8.ngrok.io/api/mode";
         final String content = new JSONObject()
                 .put("mode",mode).toString();
 
@@ -211,12 +218,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void sendOpeningLevelToServer(String value) throws JSONException {
-
-        final String url = "http://84bf59800865.ngrok.io/api/openingDam";
+        Log.d("post","here");
+        final String url = "http://f6ab7aa9c1c8.ngrok.io/api/openingDam";
         final String content = new JSONObject()
                 .put("opening",value).toString();
 
-        Http.post(url, content.getBytes(), response -> {});
+        Http.post(url, content.getBytes(), response -> {
+            if(response.code() == HttpURLConnection.HTTP_OK) {
+            }
+
+        });
     }
 
     private void connectToBTServer() throws BluetoothDeviceNotFound {

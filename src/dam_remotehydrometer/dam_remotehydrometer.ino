@@ -29,7 +29,7 @@ WaterLevel* waterLevel;
 
 char* ssidName = "TIM-CASA";
 char* pwd = "tim3d208f6e03";
-char* address = "http://1e8934e31b25.ngrok.io";
+char* address = "http://f6ab7aa9c1c8.ngrok.io";
 
 
 void setup() { 
