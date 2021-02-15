@@ -5,6 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -127,34 +128,58 @@ public class MainActivity extends AppCompatActivity {
     private void tryHttpGet(){
         final String url = "http://84bf59800865.ngrok.io/api/data";
         Http.get(url, response -> {
-           if(response.code() == HttpURLConnection.HTTP_OK) {
-                try {
-                    JSONObject content = response.contentAsJson();
+           new Runnable() {
+               @Override
+               public void run() {
+                   if (response.code() == HttpURLConnection.HTTP_OK) {
+                       try {
+                           JSONObject content = response.contentAsJson();
 
-                    if (content.has("state")) {
-                        ((TextView) findViewById(R.id.state)).setText(content.getString("state"));
+                           if (content.has("state")) {
+                               MainActivity.this.runOnUiThread(() -> {
+                                   try {
+                                       ((TextView) findViewById(R.id.state)).setText(content.getString("state"));
+                                   } catch (JSONException e) {
+                                       e.printStackTrace();
+                                   }
+                               });
 
-                        if (content.getString("state").equals("ALARM")) {
-                            findViewById(R.id.modeButton).setEnabled(true);
-                        } else {
-                            findViewById(R.id.modeButton).setEnabled(false);
-                            findViewById(R.id.radioGroup).setVisibility(View.GONE);
-                        }
-                    }
+                               if (content.getString("state").equals("ALARM")) {
+                                   MainActivity.this.runOnUiThread(() -> findViewById(R.id.modeButton).setEnabled(true));
+                               } else {
+                                   MainActivity.this.runOnUiThread(() -> findViewById(R.id.modeButton).setEnabled(false));
+                                   MainActivity.this.runOnUiThread(() -> findViewById(R.id.radioGroup).setVisibility(View.GONE));
+                               }
+                           }
 
-                    if (content.has("value")) {
-                        ((TextView) findViewById(R.id.level)).setText(content.getString("value"));
-                    }
+                           if (content.has("value")) {
+                               MainActivity.this.runOnUiThread(() -> {
+                                   try {
+                                       ((TextView) findViewById(R.id.level)).setText(content.getString("value"));
+                                   } catch (JSONException e) {
+                                       e.printStackTrace();
+                                   }
+                               });
+                           }
 
 
-                    if (content.has("opening")) {
-                        ((TextView) findViewById(R.id.opening)).setText(content.getString("opening"));
-                    }
+                           if (content.has("opening")) {
+                               MainActivity.this.runOnUiThread(() -> {
+                                   try {
+                                       ((TextView) findViewById(R.id.opening)).setText(content.getString("opening"));
+                                   } catch (JSONException e) {
+                                           e.printStackTrace();
+                                   }
+                               });
+                           }
 
-                    } catch(IOException | JSONException e){
-                        e.printStackTrace();
-                    }
-            }
+                       } catch (IOException | JSONException e) {
+                           e.printStackTrace();
+                       }
+                   }
+               }
+           };
+
         });
 
 }
