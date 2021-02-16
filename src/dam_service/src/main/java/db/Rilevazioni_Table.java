@@ -56,7 +56,7 @@ public class Rilevazioni_Table {
 
 		Connection connection = this.dataSource.getMySQLConnection();
 		PreparedStatement statement = null;
-		String query = "select * from " + tableName + " ORDER BY timeStamp DESC LIMIT 1";
+		String query = "select *, DATE_FORMAT(timeStamp,%Y-%m-%d %H:%i:%s') as timestamp from " + tableName + " ORDER BY timeStamp DESC LIMIT 1";
 		try {
 			statement = connection.prepareStatement(query);
 			ResultSet result = statement.executeQuery();
@@ -64,7 +64,7 @@ public class Rilevazioni_Table {
 				rilevazione = new Rilevazione();
 				rilevazione.setId(result.getInt("id"));
 				rilevazione.setState(result.getString("state"));
-				rilevazione.setTimeStamp(result.getTimestamp("timeStamp"));
+				rilevazione.setTimeStamp(result.getTimestamp("timestamp"));
 				rilevazione.setWaterLevel(result.getFloat("waterLevel"));
 			}
 		} catch (SQLException e) {
