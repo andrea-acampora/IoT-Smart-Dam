@@ -8,5 +8,5 @@ Temp::Temp(int pin){
 }
 
 float Temp::getTemperature(){
-     return  21;//analogRead(pin)*VCC/1023/0.01;
+     return  analogRead(pin)*VCC/1023/0.01;
 }

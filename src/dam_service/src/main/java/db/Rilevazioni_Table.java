@@ -56,7 +56,7 @@ public class Rilevazioni_Table {
 
 		Connection connection = this.dataSource.getMySQLConnection();
 		PreparedStatement statement = null;
-		String query = "select *, DATE_FORMAT(timeStamp,%Y-%m-%d %H:%i:%s') as timestamp from " + tableName + " ORDER BY timeStamp DESC LIMIT 1";
+		String query = "select id,waterLevel,state,DATE_FORMAT(timeStamp,'%Y-%m-%d %H:%i:%s') as timestamp from rilevazione ORDER BY timeStamp DESC LIMIT 1";
 		try {
 			statement = connection.prepareStatement(query);
 			ResultSet result = statement.executeQuery();

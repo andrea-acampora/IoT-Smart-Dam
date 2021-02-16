@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void tryHttpGet(){
-        final String url = "http://f6ab7aa9c1c8.ngrok.io/api/data";
+        final String url = "http://a8f1cbc84fc2.ngrok.io/api/data";
         Http.get(url, response -> {
 
             Thread thread = new Thread(new Runnable() {
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void sendModalityToServer(String mode) throws JSONException {
 
-        final String url = "http://f6ab7aa9c1c8.ngrok.io/api/mode";
+        final String url = "http://a8f1cbc84fc2.ngrok.io/api/mode";
         final String content = new JSONObject()
                 .put("mode",mode).toString();
 
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void sendOpeningLevelToServer(String value) throws JSONException {
         Log.d("post","here");
-        final String url = "http://f6ab7aa9c1c8.ngrok.io/api/openingDam";
+        final String url = "http://a8f1cbc84fc2.ngrok.io/api/openingDam";
         final String content = new JSONObject()
                 .put("opening",value).toString();
 
