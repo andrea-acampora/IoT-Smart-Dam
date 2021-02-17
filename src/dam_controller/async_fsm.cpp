@@ -20,19 +20,15 @@ void AsyncFSM::checkEvents(){
         handleEvent(ev);
         delete ev;
       }
-    }/**else{
-      startSleepMode();
-    }**/
+    }
 }
 
 
 void AsyncFSM::startSleepMode(){
-  Serial.println( "Going to sleep....\n" );
   Serial.flush();
   set_sleep_mode( SLEEP_MODE_IDLE );
   power_all_disable();
   power_usart0_enable();
   sleep_mode();
   power_all_enable();
-  Serial.println( "...Awake !\n" );
 }

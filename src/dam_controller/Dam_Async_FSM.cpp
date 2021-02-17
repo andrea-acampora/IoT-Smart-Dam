@@ -37,6 +37,7 @@ void Dam_Async_FSM::handleEvent(Event* ev){
           }else if(ev -> getMessage() == "STOP"){
             this -> receivingData = false;
             this -> led -> switchOff();
+            this->startSleepMode();
             timer0.stop();
           }
         }
