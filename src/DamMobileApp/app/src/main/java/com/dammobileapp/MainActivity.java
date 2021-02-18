@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        tryHttpGet();
+        getDataFromServer();
 
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void tryHttpGet(){
+    private void getDataFromServer(){
         final String url = "http://a8f1cbc84fc2.ngrok.io/api/data";
         Http.get(url, response -> {
 
@@ -192,33 +192,34 @@ public class MainActivity extends AppCompatActivity {
 }
 
     private void sendModalityToServer(String mode) throws JSONException {
-
         final String url = "http://a8f1cbc84fc2.ngrok.io/api/mode";
         final String content = new JSONObject()
                 .put("mode",mode).toString();
 
-        Http.post(url, content.getBytes(), response -> {
-            if(response.code() == HttpURLConnection.HTTP_OK){
+        if(((Button)findViewById(R.id.buttonbt)).getText() == "CONNECTED"){
+            Http.post(url, content.getBytes(), response -> {
+                if(response.code() == HttpURLConnection.HTTP_OK){
 
-                Button button = (Button)findViewById(R.id.modeButton);
+                    Button button = (Button)findViewById(R.id.modeButton);
 
-                if(mode.equals("manual")){
-                    findViewById(R.id.radioGroup).setVisibility(View.VISIBLE);
-                    String modeText = "automatic";
-                    button.setText(modeText);
+                    if(mode.equals("manual")){
+                        findViewById(R.id.radioGroup).setVisibility(View.VISIBLE);
+                        String modeText = "automatic";
+                        button.setText(modeText);
 
-                }else if(mode.equals("automatic")){
-                    findViewById(R.id.radioGroup).setVisibility(View.GONE);
-                    String modeText = "manual";
-                    button.setText(modeText);
+                    }else if(mode.equals("automatic")){
+                        findViewById(R.id.radioGroup).setVisibility(View.GONE);
+                        String modeText = "manual";
+                        button.setText(modeText);
+                    }
+
                 }
+            });
+        }
 
-            }
-        });
     }
 
     private void sendOpeningLevelToServer(String value) throws JSONException {
-        Log.d("post","here");
         final String url = "http://a8f1cbc84fc2.ngrok.io/api/openingDam";
         final String content = new JSONObject()
                 .put("opening",value).toString();
@@ -234,7 +235,6 @@ public class MainActivity extends AppCompatActivity {
         final BluetoothDevice serverDevice = BluetoothUtils.getPairedDeviceByName(C.bluetooth.BT_DEVICE_ACTING_AS_SERVER_NAME);
 
         final UUID uuid = BluetoothUtils.getEmbeddedDeviceDefaultUuid();
-        //final UUID uuid = BluetoothUtils.generateUuidFromString(C.bluetooth.BT_SERVER_UUID);
 
         new ConnectToBluetoothServerTask(serverDevice, uuid, new ConnectionTask.EventListener() {
             @Override
